@@ -1,6 +1,5 @@
 package customers.project.demo.entities;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -10,10 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
-public class PayrollManager implements Serializable{
+public class Utilisateur  implements Serializable{
 	public String getMatricule() {
 		return matricule;
 	}
@@ -44,27 +45,48 @@ public class PayrollManager implements Serializable{
 	public void setDate_naissance(Date date_naissance) {
 		this.date_naissance = date_naissance;
 	}
-	public String getPhoto() {
-		return photo;
+	public String getRole() {
+		return role;
 	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	private static final long serialVersionUID = 1L;
 	@Id
-
 	private String matricule;
 	private String nom;
 	private String prenom;
+	private String adresse;
+	public String getAdresse() {
+		return adresse;
+	}
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+	public Compte getCompte() {
+		return compte;
+	}
+	public void setCompte(Compte compte) {
+		this.compte = compte;
+	}
+	public Set<Commentaire> getCommentaire() {
+		return commentaire;
+	}
+	public void setCommentaire(Set<Commentaire> commentaire) {
+		this.commentaire = commentaire;
+	}
 	private String email;
 	@OneToOne
 	private Compte compte;
+	@Temporal(TemporalType.DATE)
 	private Date date_naissance;
-	private String photo;
+	private String role;
+	@OneToMany(mappedBy = "payroll")
+	@JsonIgnore
+	private Set<ResponsabiliteActivite> respoactivite=new HashSet<ResponsabiliteActivite>();
 	@OneToMany(mappedBy = "payrollmanager")
 	@JsonIgnore
 	private Set<ResponsabiliteModele> respomodele=new HashSet<ResponsabiliteModele>();
-	
-	@OneToMany(mappedBy="payrollmanager")
+	@OneToMany(mappedBy="utilisateur")
 	private Set<Commentaire> commentaire=new HashSet<Commentaire>();
 }

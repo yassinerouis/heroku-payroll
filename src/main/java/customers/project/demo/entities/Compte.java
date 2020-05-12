@@ -9,6 +9,7 @@ import javax.persistence.Id;
 public class Compte implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
+	
 	private String nomutilisateur;
 	private String motdepasse;
 	public String getNomutilisateur() {

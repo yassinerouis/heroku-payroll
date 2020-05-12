@@ -13,15 +13,7 @@ import javax.persistence.OneToMany;
 public class Famille implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int identifiant;
-	public Set<Phase> getPhases() {
-		return phases;
-	}
-	public void setPhases(Set<Phase> phases) {
-		this.phases = phases;
-	}
-	@OneToMany(mappedBy="famille")
-	private Set<Phase> phases=new HashSet<Phase>();
+	private int identifiant;	
 	private String libelle;
 	private String description;
 	public int getIdentifiant() {

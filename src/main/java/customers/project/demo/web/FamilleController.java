@@ -20,19 +20,19 @@ import customers.project.demo.services.FamilleService;
 public class FamilleController {
 	@Autowired
 	 FamilleService Familleservice;
-	@PostMapping("/saveFamille")
+	@PostMapping("/savefamille")
 	public void save(@RequestBody Famille famille) {
 		Familleservice.addFamille(famille);
 	}
-	@GetMapping("/getFamille")
+	@GetMapping("/getfamille")
 	public List<Famille> getAll() {
 		return Familleservice.getFamille();
 	}
-	@PutMapping("/updateFamille")
+	@PutMapping("/updatefamille")
 	public void updateFamille(@RequestBody Famille famille) {
 		Familleservice.updateFamille(famille);
 	}
-	@DeleteMapping("/deleteFamille/{id}")
+	@DeleteMapping("/deletefamille/{id}")
 	public void delete(@PathVariable("id") int id) {
 		Familleservice.deleteFamille(id);
 	}

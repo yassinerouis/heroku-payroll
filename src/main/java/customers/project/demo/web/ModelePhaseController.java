@@ -20,7 +20,7 @@ public class ModelePhaseController {
 	@Autowired
 	ModelePhaseService modelephaseservice;
 	@PostMapping("/savemodelephase/{phase}/{modele}")
-	public void savePhase(@PathVariable String phase,@PathVariable String modele) {
+	public void savePhase(@PathVariable long phase,@PathVariable long modele) {
 		modelephaseservice.addModelePhase(phase,modele);
 	}
 	@GetMapping("/getmodelesphases")

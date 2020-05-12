@@ -14,11 +14,22 @@ public class Commentaire implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 private int id;
 	@ManyToOne
-	private Activite activite;
+	private ActiviteSuivi activite;
 	@ManyToOne
-	private PayrollManager payrollmanager;
-	@ManyToOne
-	private Payroll payroll;
+	private Utilisateur utilisateur;
+	
+public ActiviteSuivi getActivite() {
+		return activite;
+	}
+	public void setActivite(ActiviteSuivi activite) {
+		this.activite = activite;
+	}
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
 public int getId() {
 	return id;
 }

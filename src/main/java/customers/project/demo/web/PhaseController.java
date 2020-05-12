@@ -42,8 +42,8 @@ public class PhaseController {
 	}
 	
 	@DeleteMapping("/deletePhase/{id}")
-	public void delete(@PathVariable("id") String id) {
-		phaseservice.deleteModele(id);
+	public void delete(@PathVariable("id") long id) {
+		phaseservice.deletePhase(id);
 	}		
 	
 }

@@ -17,17 +17,16 @@ public class TypePopulationService {
 	TypePopulationRepository typepoprepository;
 	
 	public TypePopulation addTypePopulation(TypePopulation typepopulation) {
-		System.out.println("hello");
 		return typepoprepository.save(typepopulation);
 	}
 	public List<TypePopulation> getTypePopulations() {
 		return typepoprepository.findAll();
 	}
 	public void updateTypePopulation(TypePopulation typepopulation) {
-		typepoprepository.getOne(typepopulation.getType_population()).
+		typepoprepository.getOne(typepopulation.getIdentifiant()).
 		setLibelle(typepopulation.getLibelle());
 	}
-	public void deleteTypePopulation(String id) {
+	public void deleteTypePopulation(int id) {
 		typepoprepository.deleteById(id);
 	}
 }

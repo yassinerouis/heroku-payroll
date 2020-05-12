@@ -24,34 +24,32 @@ public class ActionService {
 ActionRepository actionrepository;
 @Autowired
 ActiviteRepository activiterepository;
-@Autowired
-EspaceTravailRepository espacetravailrepository;
+
 @Autowired
 StatusRepository statusrepository;
-	public Action addAction(Action action,int id_status,String id_activite,int id_espace_travail) {
+	public Action addAction(Action action,int id_status,long id_activite) {
 		Activite activite=activiterepository.getOne(id_activite);
-		EspaceTravail espacetravail=espacetravailrepository.getOne(id_espace_travail);
+		
 		Status status=statusrepository.getOne(id_status);
 		Date date= new Date();
 			action.setStatus(status);
 			action.setActivite(activite);
-			action.setEspacetravail(espacetravail);
 			action.setDate_creation(date);
-			Action act=actionrepository.save(action);
-			status.getAction().add(action);
-			activite.getActions().add(action);
-			espacetravail.getActions().add(action);
-			return act;
+			return actionrepository.save(action);
 		}
 
 public List<Action> getActions() {
-	return actionrepository.findAll();
+	return actionrepository.selectActions();
 }
 public void updateAction(Action action) {
+	Date date_modification= new Date();
+	action.setDate_modification(date_modification);
+
 	actionrepository.getOne(action.getCode()).setAction(action);
 }
 
-public void deleteAction(String id) {
-	actionrepository.deleteById(id);
+public void deleteAction(long id) {
+	Date date_suppression= new Date();
+actionrepository.getOne(id).setDate_suppression(date_suppression);
 }
 }

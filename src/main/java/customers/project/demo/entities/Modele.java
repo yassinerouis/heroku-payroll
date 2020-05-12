@@ -3,14 +3,19 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,8 +25,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Modele implements Serializable{
 	private static final long serialVersionUID = 1L;
-	@Id
-	String code_modele;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	long code_modele;
 	
 	public Modele() {
 		super();
@@ -31,18 +36,29 @@ public class Modele implements Serializable{
 		this.setDate_virement(modele.date_virement);
 		this.setLibelle(modele.libelle);
 		this.setReglementation(modele.reglementation);
-		this.setType_paie(modele.type_paie);
+		this.setTypepaie(modele.typepaie);
+		this.setFrequence(modele.frequence);
 	}
 	String libelle;
 	String reglementation;
-	String type_paie;
+	
 	int date_virement;
 	@Temporal(TemporalType.DATE)
 	private Date date_creation;
+	public TypePaie getTypepaie() {
+		return typepaie;
+	}
+	public void setTypepaie(TypePaie typepaie) {
+		this.typepaie = typepaie;
+	}
+	
 	@Temporal(TemporalType.DATE)
 	private Date date_modification;
 	@ManyToOne
 	private Frequence frequence;
+	@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST)
+	private TypePaie typepaie;
+	
 	public Frequence getFrequence() {
 		return frequence;
 	}
@@ -55,30 +71,26 @@ public class Modele implements Serializable{
 	public void setRespomodele(Set<ResponsabiliteModele> respomodele) {
 		this.respomodele = respomodele;
 	}
+	/*
 	public Set<Suivi> getSuivis() {
 		return suivis;
 	}
 	public void setSuivis(Set<Suivi> suivis) {
 		this.suivis = suivis;
-	}
-	public Set<ModelePhase> getPhase() {
-		return phase;
-	}
-	public void setPhase(Set<ModelePhase> phase) {
-		this.phase = phase;
-	}
+	}*/
+	
 	@OneToMany(mappedBy = "modele")
 	@JsonIgnore
 
 	private Set<ResponsabiliteModele> respomodele=new HashSet<ResponsabiliteModele>();
-	@OneToMany(mappedBy = "modele")
+	/*@OneToMany(mappedBy = "modele")
 	@JsonIgnore
-	private Set<Suivi> suivis=new HashSet<Suivi>();
+	private Set<Suivi> suivis=new HashSet<Suivi>();*/
 	
-	public String getCode_modele() {
+	public long getCode_modele() {
 		return code_modele;
 	}
-	public void setCode_modele(String code_modele) {
+	public void setCode_modele(long code_modele) {
 		this.code_modele = code_modele;
 	}
 	public String getLibelle() {
@@ -93,12 +105,7 @@ public class Modele implements Serializable{
 	public void setReglementation(String reglementation) {
 		this.reglementation = reglementation;
 	}
-	public String getType_paie() {
-		return type_paie;
-	}
-	public void setType_paie(String type_paie) {
-		this.type_paie = type_paie;
-	}
+	
 	public int getDate_virement() {
 		return date_virement;
 	}
@@ -117,29 +124,16 @@ public class Modele implements Serializable{
 	public void setDate_modification(Date date_modification) {
 		this.date_modification = date_modification;
 	}
-	public Set<ModelePhase> getPhases() {
-		return phase;
-	}
-	public void setPhases(Set<ModelePhase> phase) {
-		this.phase = phase;
-	}
+	
 	public Date getDate_suppression() {
 		return date_suppression;
 	}
 	public void setDate_suppression(Date date_suppression) {
 		this.date_suppression = date_suppression;
 	}
-	public Set<PopulationModele> getPopulations() {
-		return populations;
-	}
-	public void setPopulations(Set<PopulationModele> populations) {
-		this.populations = populations;
-	}
-	@OneToMany(mappedBy = "modele")
-	@JsonIgnore
-	private Set<ModelePhase> phase=new HashSet<ModelePhase>();
+	
+	
 	@Temporal(TemporalType.DATE)
 	private Date date_suppression;
-	@OneToMany(mappedBy = "modele")
-	private Set<PopulationModele> populations=new HashSet<PopulationModele>();
+	
 }

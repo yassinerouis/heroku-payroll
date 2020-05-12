@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import customers.project.demo.dao.CommentaireRepository;
 import customers.project.demo.entities.Commentaire;
 @Service
+
 @Transactional
 public class CommentaireService {
 	@Autowired

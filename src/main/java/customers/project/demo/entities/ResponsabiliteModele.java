@@ -6,17 +6,31 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 @Entity
 public class ResponsabiliteModele implements Serializable{
 	private static final long serialVersionUID = 1L;
-	@Id
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
+	public Utilisateur getPayrollmanager() {
+		return payrollmanager;
+	}
+	public void setPayrollmanager(Utilisateur payrollmanager) {
+		this.payrollmanager = payrollmanager;
+	}
+	public Modele getModele() {
+		return modele;
+	}
+	public void setModele(Modele modele) {
+		this.modele = modele;
+	}
 	private Date date_debut;
 	private Date date_fin;
 	@ManyToOne(fetch = FetchType.LAZY)
-	private PayrollManager payrollmanager;
+	private Utilisateur payrollmanager;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Modele modele;
 	public Date getDate_debut() {

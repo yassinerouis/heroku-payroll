@@ -15,14 +15,7 @@ public class EspaceTravail implements Serializable{
 private int id;
 private String libelle;
 private String description;
-@OneToMany(mappedBy="espacetravail")
-private Set<Action> actions=new HashSet<Action>();
-public Set<Action> getActions() {
-	return actions;
-}
-public void setActions(Set<Action> actions) {
-	this.actions = actions;
-}
+
 public int getId() {
 	return id;
 }

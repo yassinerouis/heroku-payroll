@@ -1,9 +1,14 @@
 package customers.project.demo.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,8 +19,22 @@ import customers.project.demo.services.ActionService;
 public class ActionController {
 	@Autowired
 	ActionService actionservice;
-	@PostMapping("/saveaction/{id_status}/{id_activite}/{id_espacetravail}")
-	public void save(@RequestBody Action action,@PathVariable int id_status,@PathVariable String id_activite,@PathVariable int id_espacetravail) {
-		actionservice.addAction(action, id_status, id_activite, id_espacetravail);
+	@PostMapping("/saveaction/{id_status}/{id_activite}")
+	public void save(@RequestBody Action action,@PathVariable int id_status,@PathVariable long id_activite) {
+		actionservice.addAction(action, id_status, id_activite);
 	}
+	@GetMapping("/getactions")
+	public List<Action> getAll() {
+		return actionservice.getActions();
+	}
+	
+	@PutMapping("/updateaction")
+	public void updateaction(@RequestBody Action action) {
+		actionservice.updateAction(action);
+	}
+	
+	@DeleteMapping("/deleteaction/{id}")
+	public void delete(@PathVariable("id") long id) {
+		actionservice.deleteAction(id);
+	}		
 }

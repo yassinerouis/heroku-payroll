@@ -22,7 +22,7 @@ public class PopulationService {
 		PopulationRepository populationrepository;
 		@Autowired
 		TypePopulationRepository typepopulationrepository;
-		public Population addPopulation(Population population,String type) {
+		public Population addPopulation(Population population,int type) {
 			TypePopulation typepop=typepopulationrepository.getOne(type);
 			population.setTypepopulation(typepop);
 			return populationrepository.save(population);
@@ -31,15 +31,13 @@ public class PopulationService {
 		public List<Population> getPopulations() {
 			return populationrepository.findAll();
 		}
-		public void updatePopulation(Population population,String type) {
+		public void updatePopulation(Population population,int type) {
 			TypePopulation typepop=typepopulationrepository.getOne(type);
 			population.setTypepopulation(typepop);
-			populationrepository.getOne(population.getCode_population()).setLibelle(population.getLibelle());
+			populationrepository.getOne(population.getIdentifiant()).setLibelle(population.getLibelle());
+			populationrepository.save(population);
 		}
-		public void deletePopulation(String id) {
+		public void deletePopulation(int id) {
 			populationrepository.deleteById(id);
-		}
-		
-		
-		
+		}	
 }

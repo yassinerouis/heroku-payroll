@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import customers.project.demo.entities.TypePopulation;
 
-public interface TypePopulationRepository  extends JpaRepository<TypePopulation,String>{
+public interface TypePopulationRepository  extends JpaRepository<TypePopulation,Integer>{
 
 }

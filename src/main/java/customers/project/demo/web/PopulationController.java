@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +20,21 @@ import customers.project.demo.services.PopulationService;
 public class PopulationController {
 	@Autowired
 	PopulationService populationservice;
-	@PostMapping("/savepopulation/{type}")
-	public void save(@RequestBody Population population,@PathVariable String type) {
+	@PostMapping("/savePopulation/{type}")
+	public void save(@RequestBody Population population,@PathVariable int type) {
 		populationservice.addPopulation(population,type);
 	}
-	@GetMapping("/getpopulations")
+	@GetMapping("/getPopulations")
 	public List<Population> getAll() {
 		return populationservice.getPopulations();
 	}
-	@PutMapping("/updatepopulation/{type}")
-	public void updateModele(@RequestBody Population population,@PathVariable String type) {
+	@PutMapping("/updatePopulation/{type}")
+	public void updateModele(@RequestBody Population population,@PathVariable int type) {
+		System.out.println(type);
 		populationservice.updatePopulation(population,type);	
+	}
+	@DeleteMapping("/deletePopulation/{id}")
+	public void delete(@PathVariable("id") int id) {
+		populationservice.deletePopulation(id);
 	}
 }

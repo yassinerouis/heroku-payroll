@@ -20,11 +20,11 @@ import customers.project.demo.services.FrequenceService;
 public class FrequenceController {
 	@Autowired
 	 FrequenceService frequenceservice;
-	@PostMapping("/saveFrequence")
+	@PostMapping("/savefrequence")
 	public void save(@RequestBody Frequence frequence) {
 		frequenceservice.addFrequence(frequence);
 	}
-	@GetMapping("/getFrequence")
+	@GetMapping("/getfrequence")
 	public List<Frequence> getAll() {
 		return frequenceservice.getFrequence();
 	}

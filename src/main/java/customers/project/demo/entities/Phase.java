@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -25,14 +27,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Phase implements Serializable{
 	private static final long serialVersionUID = 1L;
-	@Id
-	String code_phase;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	long code_phase;
 	
-	public String getCode_phase() {
+	public long getCode_phase() {
 		return code_phase;
 	}
 
-	public void setCode_phase(String code_phase) {
+	public void setCode_phase(long code_phase) {
 		this.code_phase = code_phase;
 	}
 
@@ -52,10 +54,7 @@ public class Phase implements Serializable{
 		this.activite = activite;
 	}
 
-	public Set<ModelePhase> getModele() {
-		return modele;
-	}
-
+	
 	public Phase() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -99,21 +98,14 @@ public class Phase implements Serializable{
 	public void setDate_modification(Date date_modification) {
 		this.date_modification = date_modification;
 	}
-	public Set<ModelePhase> getModeles() {
-		return modele;
-	}
-	public void setModele(Set<ModelePhase> modele) {
-		this.modele = modele;
-	}
+	
 	public Date getDate_suppression() {
 		return date_suppression;
 	}
 	public void setDate_suppression(Date date_suppression) {
 		this.date_suppression = date_suppression;
 	}
-	@OneToMany(mappedBy = "phase")
-	@JsonIgnore
-	private Set<ModelePhase> modele=new HashSet<ModelePhase>();
+	
 	@OneToMany(mappedBy = "phase")
 	@JsonIgnore
 	private Set<Activite> activite=new HashSet<Activite>();

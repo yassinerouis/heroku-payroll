@@ -19,9 +19,9 @@ public Long getId() {
 public void setId(Long id) {
 	this.id = id;
 }
-@ManyToOne(fetch = FetchType.LAZY)
+@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST,fetch = FetchType.LAZY)
 private Modele modele;
-@ManyToOne(fetch = FetchType.LAZY)
+@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST,fetch = FetchType.LAZY)
 private Phase phase;
 
 public Phase getPhase() {

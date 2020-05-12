@@ -34,6 +34,5 @@ public void setDescription(String description) {
 }
 private String libelle;
 private String description;
-@OneToMany(mappedBy="frequence")
-private Set<Modele> modeles=new HashSet<Modele>();
+
 }

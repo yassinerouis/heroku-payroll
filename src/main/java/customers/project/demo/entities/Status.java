@@ -15,25 +15,10 @@ public class Status implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int identifiant;
-	public Set<Activite> getActivite() {
-		return activite;
-	}
-	public void setActivite(Set<Activite> activite) {
-		this.activite = activite;
-	}
-	public Set<Action> getAction() {
-		return action;
-	}
-	public void setAction(Set<Action> action) {
-		this.action = action;
-	}
+	
 	private String libelle;
 	private String description;
-	@OneToMany(mappedBy="status")
-	private Set<Activite> activite=new HashSet<Activite>();
-
-	@OneToMany(mappedBy="status")
-	private Set<Action> action=new HashSet<Action>();
+	
 	public int getIdentifiant() {
 		return identifiant;
 	}

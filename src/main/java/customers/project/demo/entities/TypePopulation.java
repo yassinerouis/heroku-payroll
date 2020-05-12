@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -13,38 +15,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class TypePopulation implements Serializable{
 	private static final long serialVersionUID = 1L;
-	@Id
-	private String type_population;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int identifiant;
 	private String libelle;
-	@OneToMany(mappedBy = "typepopulation")
-	@JsonIgnore
-	private Set<Population> population=new HashSet<Population>();
 	
-	public Set<Population> getPopulation() {
-		return population;
+	
+	public TypePopulation(int identifiant, String libelle, Set<Population> population, Set<PopulationModele> modele) {
+		super();
+		this.identifiant = identifiant;
+		this.libelle = libelle;
+		
+		
 	}
-	public void setPopulation(Set<Population> population) {
-		this.population = population;
-	}
-	public Set<PopulationModele> getModele() {
-		return modele;
-	}
-	public void setModele(Set<PopulationModele> modele) {
-		this.modele = modele;
-	}
-	@OneToMany(mappedBy = "typepopulation")
-	@JsonIgnore
-
-	private Set<PopulationModele> modele=new HashSet<PopulationModele>();
+	
+	
+	
+	
 	public TypePopulation() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public String getType_population() {
-		return type_population;
+	public int getIdentifiant() {
+		return identifiant;
 	}
-	public void setType_population(String type_population) {
-		this.type_population = type_population;
+	public void setIdentifiant(int identifiant) {
+		this.identifiant = identifiant;
 	}
 	public String getLibelle() {
 		return libelle;

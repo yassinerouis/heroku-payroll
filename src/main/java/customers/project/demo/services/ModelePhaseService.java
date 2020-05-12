@@ -26,7 +26,7 @@ public class ModelePhaseService {
 	@Autowired
 	ModelePhaseRepository modelephaserepository;
 	
-	public ModelePhase addModelePhase(String phase,String modele) {
+	public ModelePhase addModelePhase(long phase,long modele) {
 		Phase pha=phaserepository.getOne(phase);
 		Modele mod=modelerepository.getOne(modele);
 		ModelePhase modelephase=new ModelePhase();
@@ -34,8 +34,7 @@ public class ModelePhaseService {
 		modelephase.setModele(mod);
 		modelephaserepository.save(modelephase);
 		
-		pha.getModele().add(modelephase);
-		mod.getPhase().add(modelephase);
+		
 		
 		return modelephaserepository.save(modelephase);
 	}

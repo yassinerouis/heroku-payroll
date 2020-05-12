@@ -23,7 +23,6 @@ public class TypePopulationController {
 	TypePopulationService typepopulationservice;
 	@PostMapping("/savetypepopulation")
 	public void save(@RequestBody TypePopulation typepopulation) {
-		System.out.println("hi"+typepopulation.getType_population());
 		typepopulationservice.addTypePopulation(typepopulation);
 	}
 	@GetMapping("/gettypepopulations")
@@ -36,7 +35,7 @@ public class TypePopulationController {
 	}
 	
 	@DeleteMapping("/deletetypepopulation/{id}")
-	public void delete(@PathVariable("id") String id) {
+	public void delete(@PathVariable("id") int id) {
 		typepopulationservice.deleteTypePopulation(id);
 	}
 }

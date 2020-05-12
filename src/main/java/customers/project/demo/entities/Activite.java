@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.ManyToOne;
@@ -37,13 +39,12 @@ public class Activite implements Serializable{
 		this.setVue_ensemble(activite.vue_ensemble);
 		this.setPilotage(activite.pilotage);
 		this.setPeriodicite(activite.periodicite);
-		this.setPrecedente(activite.precedente);
+		this.setPrecedente(activite.prerequis);
 	}
 
-	@Id
-	private String code_activite;
-	@OneToMany(mappedBy="activite")
-	private Set<Commentaire> commentaire=new HashSet<Commentaire>();
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long code_activite;
+	
 	
 		public String getLibelle() {
 			return libelle;
@@ -90,10 +91,19 @@ public class Activite implements Serializable{
 	private String fonction;
 	private String mode_activite;
 	private int ordre_affichage;
-	public String getCode_activite() {
+	@ManyToOne
+	private EspaceTravail espacetravail;
+	
+	public EspaceTravail getEspacetravail() {
+		return espacetravail;
+	}
+	public void setEspacetravail(EspaceTravail espacetravail) {
+		this.espacetravail = espacetravail;
+	}
+	public long getCode_activite() {
 		return code_activite;
 	}
-	public void setCode_activite(String code_activite) {
+	public void setCode_activite(long code_activite) {
 		this.code_activite = code_activite;
 	}
 	public String getFamille() {
@@ -132,12 +142,7 @@ public class Activite implements Serializable{
 	public void setPeriodicite(String periodicite) {
 		this.periodicite = periodicite;
 	}
-	public int getEcheance() {
-		return echeance;
-	}
-	public void setEcheance(int echeance) {
-		this.echeance = echeance;
-	}
+	
 	public String getVue_ensemble() {
 		return vue_ensemble;
 	}
@@ -145,15 +150,7 @@ public class Activite implements Serializable{
 		this.vue_ensemble = vue_ensemble;
 	}
 	
-	public Set<Action> getActions() {
-		return actions;
-	}
-	public void setActions(Set<Action> actions) {
-		this.actions = actions;
-	}
-
 	private String periodicite;
-	private int echeance;
 	private String vue_ensemble;
 	@Temporal(TemporalType.DATE)
 	private Date date_creation;
@@ -163,24 +160,17 @@ public class Activite implements Serializable{
 	private Date date_suppression;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Phase phase;
-	@OneToOne
+	@OneToMany
 	@JsonIgnore
-	private Activite precedente;
-	public Activite getPrecedente() {
-		return precedente;
+	private Set<Activite> prerequis;
+	public Set<Activite> getPrerequis() {
+		return prerequis;
 	}
-	public void setPrecedente(Activite precedente) {
-		this.precedente = precedente;
+	public void setPrecedente(Set<Activite> prerequis) {
+		this.prerequis = prerequis;
 	}
 
-	@OneToMany(mappedBy="activite")
-	private Set<Action> actions=new HashSet<Action>();
-	public Set<Commentaire> getCommentaire() {
-		return commentaire;
-	}
-	public void setCommentaire(Set<Commentaire> commentaire) {
-		this.commentaire = commentaire;
-	}
+	
 	public Status getStatus() {
 		return status;
 	}
