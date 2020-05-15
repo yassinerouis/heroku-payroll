@@ -21,15 +21,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import customers.project.demo.entities.Documentation;
 import customers.project.demo.entities.Lien;
+import customers.project.demo.entities.SousLien;
 import customers.project.demo.services.LienService;
 
 @RestController
 @CrossOrigin
 public class LienController {
-	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/menu/";
+	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/menu/horizontal";
 	@Autowired
 	 LienService Lienservice;
-	@PostMapping("/menuhorizontal/saveLien")
+	@PostMapping("/menuHorizontal/saveLien")
 	public void save(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {
 		try {
 			Lien lien = new ObjectMapper().readValue(lien_menu,Lien.class);
@@ -44,15 +45,16 @@ public class LienController {
 			e.printStackTrace();
 		} 
 	}
-	@GetMapping("/menuhorizontal/getLiens")
+	@GetMapping("/menuHorizontal/getLiens")
 	public List<Lien> getAll() {
 		
-		return Lienservice.getLien();
+		return Lienservice.getLiensHorizonatl();
 	}
-	@PutMapping("/menuhorizontal/updateLien")
+	@PutMapping("/menuHorizontal/updateLien")
 	public void updateLien(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {
 		try {
 			Lien lien = new ObjectMapper().readValue(lien_menu,Lien.class);
+			System.out.println(lien.getId());
 			StringBuilder fileNames = new StringBuilder();
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			fileNames.append(file.getOriginalFilename()+" ");
@@ -84,19 +86,17 @@ public class LienController {
 			e.printStackTrace();
 		} 
 	}
-	@GetMapping("/menuvertical/getLiens")
+	@GetMapping("/menuVertical/getLiens")
 	public List<Lien> getAllVertical() {
-		
-		return Lienservice.getLien();
+		return Lienservice.getLiensVertical();
 	}
-	@PutMapping("/menuvertical/updateLien")
-	public void updateLienVertical(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {
+	@GetMapping("/getSousLien/{id}")
+	public List<SousLien> getSousLiens(@PathVariable("id") int id) {
+		return Lienservice.getSousLiens(id);
+	}
+	@PutMapping("/menuVertical/updateLien")
+	public void updateLienVertical(@RequestBody Lien lien) {
 		try {
-			Lien lien = new ObjectMapper().readValue(lien_menu,Lien.class);
-			StringBuilder fileNames = new StringBuilder();
-			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
-			fileNames.append(file.getOriginalFilename()+" ");
-			Files.write(fileNameAndPath, file.getBytes());
 			lien.setMenu("V");
 			Lienservice.updateLien(lien);
 			} catch (Exception e) {
@@ -104,5 +104,4 @@ public class LienController {
 			e.printStackTrace();
 		}
 	}
-	
 }

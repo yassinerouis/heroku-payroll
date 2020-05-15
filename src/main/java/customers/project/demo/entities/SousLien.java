@@ -1,9 +1,11 @@
 package customers.project.demo.entities;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,17 +22,23 @@ public class SousLien implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String libelle;
-	private String description;
 	private int ordre_affichage;
-	private String role;
-	@OneToOne
-private Lien lien;
-	public String getRole() {
-		return role;
+	@Convert(converter = StringListConverter.class)
+	private List<String> roles;	
+	private String valeur_lien;
+	public String getValeur_lien() {
+		return valeur_lien;
 	}
-
-	public void setRole(String role) {
-		this.role = role;
+	public void setValeur_lien(String valeur_lien) {
+		this.valeur_lien = valeur_lien;
+	}
+	@OneToOne
+	private Lien lien;
+	public List<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	public Lien getLien() {
@@ -62,11 +70,6 @@ private Lien lien;
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
 	
 }

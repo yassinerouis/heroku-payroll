@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -33,18 +34,7 @@ public class Utilisateur  implements Serializable{
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Date getDate_naissance() {
-		return date_naissance;
-	}
-	public void setDate_naissance(Date date_naissance) {
-		this.date_naissance = date_naissance;
-	}
+
 	public String getRole() {
 		return role;
 	}
@@ -53,16 +43,20 @@ public class Utilisateur  implements Serializable{
 	}
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(length = 6)
 	private String matricule;
+	@Column(length = 3)
+	private String reglementation;
+	public String getReglementation() {
+		return reglementation;
+	}
+	public void setReglementation(String reglemenatation) {
+		this.reglementation = reglemenatation;
+	}
 	private String nom;
 	private String prenom;
-	private String adresse;
-	public String getAdresse() {
-		return adresse;
-	}
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
+	private String societe;
+	
 	public Compte getCompte() {
 		return compte;
 	}
@@ -75,11 +69,47 @@ public class Utilisateur  implements Serializable{
 	public void setCommentaire(Set<Commentaire> commentaire) {
 		this.commentaire = commentaire;
 	}
-	private String email;
+	private String etablissement;
+	private String emploi;
+	private String statut;
 	@OneToOne
 	private Compte compte;
-	@Temporal(TemporalType.DATE)
-	private Date date_naissance;
+	public String getSociete() {
+		return societe;
+	}
+	public void setSociete(String societe) {
+		this.societe = societe;
+	}
+	public String getEtablissement() {
+		return etablissement;
+	}
+	public void setEtablissement(String etablissement) {
+		this.etablissement = etablissement;
+	}
+	public String getEmploi() {
+		return emploi;
+	}
+	public void setEmploi(String emploi) {
+		this.emploi = emploi;
+	}
+	public String getStatut() {
+		return statut;
+	}
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
+	public Set<ResponsabiliteActivite> getRespoactivite() {
+		return respoactivite;
+	}
+	public void setRespoactivite(Set<ResponsabiliteActivite> respoactivite) {
+		this.respoactivite = respoactivite;
+	}
+	public Set<ResponsabiliteModele> getRespomodele() {
+		return respomodele;
+	}
+	public void setRespomodele(Set<ResponsabiliteModele> respomodele) {
+		this.respomodele = respomodele;
+	}
 	private String role;
 	@OneToMany(mappedBy = "payroll")
 	@JsonIgnore

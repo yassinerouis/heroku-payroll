@@ -21,6 +21,7 @@ public class UtilisateurController {
 	 UtilisateurService utilisateurservice;
 	@PostMapping("/saveutilisateur")
 	public void save(@RequestBody Utilisateur utilisateur) {
+		System.out.println(utilisateur.getReglementation());
 		utilisateurservice.addutilisateur(utilisateur);
 	}
 	@GetMapping("/getutilisateurs")

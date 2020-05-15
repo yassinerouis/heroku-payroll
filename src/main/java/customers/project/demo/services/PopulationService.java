@@ -1,6 +1,7 @@
 package customers.project.demo.services;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -39,5 +40,12 @@ public class PopulationService {
 		}
 		public void deletePopulation(int id) {
 			populationrepository.deleteById(id);
-		}	
+		}
+		public Set<Population> getEtablissements() {
+			return populationrepository.PopulationsEtablissement();
+		}
+		public Set<Population> getSocietes() {
+			return populationrepository.PopulationsSociete();
+		}
+
 }

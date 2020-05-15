@@ -1,13 +1,9 @@
 package customers.project.demo.web;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,58 +17,61 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import customers.project.demo.entities.Action;
 import customers.project.demo.entities.Documentation;
-import customers.project.demo.entities.Famille;
-import customers.project.demo.services.DocumentationService;
-
+import customers.project.demo.entities.Pays;
+import customers.project.demo.services.ActionService;
+import customers.project.demo.services.PaysService;
 @RestController
 @CrossOrigin
-public class DocumentationController {
-	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/";
+public class PaysController {
+	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/pays/";
+
 	@Autowired
-	DocumentationService documentationservice;
-	@PostMapping("/saveDocument")
-	public void save(@RequestParam("file") MultipartFile file,@RequestParam("document") String doc) {
-		
+	PaysService paysservice;
+
+	@PostMapping("/savePays")
+	public void save(@RequestParam("file") MultipartFile file,@RequestParam("pays") String pays_infos) {
+		System.out.println(file.getName());
 		try {
-			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
+			Pays pays = new ObjectMapper().readValue(pays_infos,Pays.class);
 			StringBuilder fileNames = new StringBuilder();
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			  fileNames.append(file.getOriginalFilename()+" ");
 			  Files.write(fileNameAndPath, file.getBytes());
 			
-			documentation.setFile(file.getOriginalFilename());
-			documentationservice.addDocument(documentation);
+			pays.setLogo(file.getOriginalFilename());
+			paysservice.addPays(pays);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		}
-	@PutMapping("/updateDocument")
-public void updateDocument(@RequestParam("file") MultipartFile file,@RequestParam("document") String doc) {
-		
+	@GetMapping("/getPays")
+	public List<Pays> getAll() {
+		return paysservice.getPays();
+	}
+	
+	@PutMapping("/updatePays")
+	public void updateaction(@RequestParam("file") MultipartFile file,@RequestParam("pays") String pays_infos) {
 		try {
-			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
+			Pays pays = new ObjectMapper().readValue(pays_infos,Pays.class);
 			StringBuilder fileNames = new StringBuilder();
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			  fileNames.append(file.getOriginalFilename()+" ");
 			  Files.write(fileNameAndPath, file.getBytes());
-			documentationservice.updateDocumentation(documentation);
+			
+			pays.setLogo(file.getOriginalFilename());
+			paysservice.updatePays(pays);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		}
-	@DeleteMapping("/deleteDocument/{id}")
+	@DeleteMapping("/deletePays/{id}")
 	public void delete(@PathVariable("id") int id) {
-		documentationservice.deleteDocumentation(id);
-	}
-	@GetMapping("/getDocuments")
-	public List<Documentation> getAll() {
-		return documentationservice.getDocuments();
+		paysservice.deletePays(id);
 	}
 }

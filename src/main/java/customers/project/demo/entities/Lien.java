@@ -1,12 +1,18 @@
 package customers.project.demo.entities;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -19,8 +25,37 @@ private String libelle;
 private String description;
 private int ordre_affichage;
 private boolean sous_lien;
+@Convert(converter = StringListConverter.class)
+private List<String> roles;
+@Convert(converter = StringListConverter.class)
+private List<String> pays;
 private String valeur_lien;
 private String menu;
+private String logo;
+public List<String> getRoles() {
+	return roles;
+}
+public void setRoles(List<String> roles) {
+	this.roles = roles;
+}
+public List<String> getPays() {
+	return pays;
+}
+public void setPays(List<String> pays) {
+	this.pays = pays;
+}
+public String getValeur_lien() {
+	return valeur_lien;
+}
+public void setValeur_lien(String valeur_lien) {
+	this.valeur_lien = valeur_lien;
+}
+public String getLogo() {
+	return logo;
+}
+public void setLogo(String logo) {
+	this.logo = logo;
+}
 public String getMenu() {
 	return menu;
 }

@@ -9,28 +9,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import customers.project.demo.dao.LienRepository;
+import customers.project.demo.dao.SousLienRepository;
 import customers.project.demo.entities.Lien;
+import customers.project.demo.entities.SousLien;
 @Service
 @Transactional
 public class LienService {
-
-
 	@Autowired
 	LienRepository Lienrepository;
+	@Autowired
+	SousLienRepository souslienrepository;
 	public Lien addLien(Lien Lien) {
 		return Lienrepository.save(Lien);
 	}
-	public List<Lien> getLien() {
-		return Lienrepository.findAll();
+	public List<Lien> getLiensHorizonatl() {
+		return Lienrepository.findAllHorizontal();
+	}
+	public List<SousLien> getSousLiens(int id) {
+		return souslienrepository.findAllSousLiens(id);
+	}
+	public List<Lien> getLiensVertical() {
+		for(int i=0;i<Lienrepository.findAllVertical().size();i++) {
+			System.out.print(Lienrepository.findAllVertical().get(i).getLibelle());
+		}
+		return Lienrepository.findAllVertical();
 	}
 	public void updateLien(Lien Lien) {
 		Lienrepository.getOne(Lien.getId()).setLibelle(Lien.getLibelle());
 		Lienrepository.getOne(Lien.getId()).setOrdre_affichage(Lien.getOrdre_affichage());
 		Lienrepository.getOne(Lien.getId()).setLien(Lien.getLien());
+		Lienrepository.getOne(Lien.getId()).setPays(Lien.getPays());
+		Lienrepository.getOne(Lien.getId()).setRoles(Lien.getRoles());
 		Lienrepository.getOne(Lien.getId()).setSous_lien(Lien.getSous_lien());
-		Lienrepository.getOne(Lien.getId()).setDescription(Lien.getDescription());
 	}
 	public void deleteLien(Integer id) {
 		Lienrepository.deleteById(id);
 	}
+	
 }

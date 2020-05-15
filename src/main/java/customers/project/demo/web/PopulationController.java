@@ -1,6 +1,7 @@
 package customers.project.demo.web;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,5 +37,13 @@ public class PopulationController {
 	@DeleteMapping("/deletePopulation/{id}")
 	public void delete(@PathVariable("id") int id) {
 		populationservice.deletePopulation(id);
+	}
+	@GetMapping("/listSocietes")
+	public Set<Population> getSocieties() {
+		return populationservice.getSocietes();
+	}
+	@GetMapping("/listEtablissements")
+	public Set<Population> getEtablissements() {
+		return populationservice.getEtablissements();
 	}
 }

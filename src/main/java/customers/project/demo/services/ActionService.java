@@ -27,14 +27,12 @@ ActiviteRepository activiterepository;
 
 @Autowired
 StatusRepository statusrepository;
-	public Action addAction(Action action,int id_status,long id_activite) {
+public Action addAction(Action action,int id_status,long id_activite) {
 		Activite activite=activiterepository.getOne(id_activite);
 		
 		Status status=statusrepository.getOne(id_status);
-		Date date= new Date();
 			action.setStatus(status);
 			action.setActivite(activite);
-			action.setDate_creation(date);
 			return actionrepository.save(action);
 		}
 
@@ -42,14 +40,11 @@ public List<Action> getActions() {
 	return actionrepository.selectActions();
 }
 public void updateAction(Action action) {
-	Date date_modification= new Date();
-	action.setDate_modification(date_modification);
 
 	actionrepository.getOne(action.getCode()).setAction(action);
 }
 
 public void deleteAction(long id) {
-	Date date_suppression= new Date();
-actionrepository.getOne(id).setDate_suppression(date_suppression);
+	actionrepository.deleteById(id);
 }
 }
