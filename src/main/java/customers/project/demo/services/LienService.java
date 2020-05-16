@@ -38,9 +38,9 @@ public class LienService {
 		Lienrepository.getOne(Lien.getId()).setLibelle(Lien.getLibelle());
 		Lienrepository.getOne(Lien.getId()).setOrdre_affichage(Lien.getOrdre_affichage());
 		Lienrepository.getOne(Lien.getId()).setLien(Lien.getLien());
-		Lienrepository.getOne(Lien.getId()).setPays(Lien.getPays());
+		Lienrepository.getOne(Lien.getId()).setLogo(Lien.getLogo());
 		Lienrepository.getOne(Lien.getId()).setRoles(Lien.getRoles());
-		Lienrepository.getOne(Lien.getId()).setSous_lien(Lien.getSous_lien());
+		
 	}
 	public void deleteLien(Integer id) {
 		Lienrepository.deleteById(id);

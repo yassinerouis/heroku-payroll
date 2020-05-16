@@ -10,8 +10,8 @@ import customers.project.demo.entities.Lien;
 import customers.project.demo.entities.Modele;
 
 public interface LienRepository extends JpaRepository<Lien,Integer> {
-	@Query("FROM Lien where menu='H'")
+	@Query("FROM Lien where menu='H' order by ordre_affichage asc")
 	public List<Lien> findAllHorizontal();
-	@Query("FROM Lien where menu='V'")
+	@Query("FROM Lien where menu='V' order by ordre_affichage asc")
 	public List<Lien> findAllVertical();
 }

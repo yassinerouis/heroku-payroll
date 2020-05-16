@@ -23,11 +23,7 @@ public class SousLienService {
 		return sousLienrepository.findAll();
 	}
 	public void updatesousLien(SousLien sousLien) {
-		sousLienrepository.getOne(sousLien.getId()).setLibelle(sousLien.getLibelle());
 		sousLienrepository.getOne(sousLien.getId()).setOrdre_affichage(sousLien.getOrdre_affichage());
-		sousLienrepository.getOne(sousLien.getId()).setRole(sousLien.getRole());
-		sousLienrepository.getOne(sousLien.getId()).setDescription(sousLien.getDescription());
-		sousLienrepository.getOne(sousLien.getId()).setLien(sousLien.getLien());
 	}
 	public void deletesousLien(Integer id) {
 		sousLienrepository.deleteById(id);
