@@ -1,7 +1,9 @@
 package customers.project.demo.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -29,24 +31,9 @@ public class ActiviteService {
 	@Autowired
 	EspaceTravailRepository espacetravailrepository;
 	@Autowired
-	
-	
 	PhaseRepository phaserepository;
-public Activite addActivite(Activite activite,int id_status,long id_phase,long id_prerequis,int id_espacetravail) {
-	Phase phase=phaserepository.getOne(id_phase);
-		Status status=statusrepository.getOne(id_status);
-		EspaceTravail espacetravail=espacetravailrepository.getOne(id_espacetravail);
-
-		Date date= new Date();
-		activite.setPhase(phase);
-		activite.setDate_creation(date);
-		activite.setStatus(status);
-		activite.setEspacetravail(espacetravail);
-		Activite prerequis=activiterepository.getOne(id_prerequis);
-			activite.setPrecedente(prerequis);
-			Activite act=activiterepository.save(activite);
-		
-		return act;
+public Activite addActivite(Activite activite) {
+	return activiterepository.save(activite);
 	}
 public Activite addFirstActivite(Activite activite,int id_status,long id_phase,int id_espacetravail) {
 	Phase phase=phaserepository.getOne(id_phase);
@@ -54,32 +41,41 @@ public Activite addFirstActivite(Activite activite,int id_status,long id_phase,i
 		Status status=statusrepository.getOne(id_status);
 		Date date= new Date();
 		activite.setPhase(phase);
-		activite.setDate_creation(date);
 		activite.setStatus(status);
-		activite.setPrecedente(activite);
 		Activite act=activiterepository.save(activite);
 		phase.getActivite().add(activite);
 		activite.setEspacetravail(espacetravail);
 		return act;
 	}
 
+public Activite getActivite(Long id) {
+	return activiterepository.getOne(id);
+}
 public List<Activite> getActivites() {
-	return activiterepository.selectActivities();
+	return activiterepository.findAll();
+}
+public Set<Activite> getPrerequis(long id_activite) {
+	return activiterepository.getOne(id_activite).getPrerequis();
 }
 public List<Activite> selectActivites(Long id_phase) {
 	Phase phase=phaserepository.getOne(id_phase);
 	return activiterepository.selectPhases(phase);
 }
 public void updateActivite(Activite Activite) {
-	Date date_modification= new Date();
-	Activite.setDate_modification(date_modification);
 	activiterepository.getOne(Activite.getCode_activite()).setActivite(Activite);
-	
 }
-
 public void deleteActivite(long id) {
-	Date date_suppression= new Date();
-activiterepository.getOne(id).setDate_suppression(date_suppression);
+	for(int i=0;i<this.getActivites().size();i++) {
+		for(int j=0;j<this.getActivites().get(i).getPrerequis().size();j++) {
+			List<Activite> list = new ArrayList<Activite>(this.getActivites().get(i).getPrerequis());
+			if(list.get(j).getCode_activite()==id) {
+				this.getActivites().get(i).getPrerequis().remove(activiterepository.getOne(id));
+			}
+		}
+	}
+	activiterepository.getOne(id).setPrecedente(null);
+	activiterepository.save(activiterepository.getOne(id));
+	activiterepository.deleteById(id);
 }
 
 }

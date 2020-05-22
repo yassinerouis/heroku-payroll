@@ -11,6 +11,5 @@ import customers.project.demo.entities.Phase;
 public interface ActiviteRepository extends JpaRepository<Activite,Long>{
 	@Query("FROM Activite where phase=?1")
 	public List<Activite> selectPhases(Phase phase);
-	@Query("FROM Activite where date_suppression is null")
-	public List<Activite> selectActivities();
+	
 }

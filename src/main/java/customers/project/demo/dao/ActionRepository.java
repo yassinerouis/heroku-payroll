@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import customers.project.demo.entities.Action;
 
 public interface ActionRepository extends JpaRepository<Action,Long> {
-	@Query("FROM Action where date_suppression is null")
-	public List<Action> selectActions();
+
 }

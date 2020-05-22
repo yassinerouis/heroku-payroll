@@ -27,20 +27,15 @@ ActiviteRepository activiterepository;
 
 @Autowired
 StatusRepository statusrepository;
-public Action addAction(Action action,int id_status,long id_activite) {
-		Activite activite=activiterepository.getOne(id_activite);
-		
-		Status status=statusrepository.getOne(id_status);
-			action.setStatus(status);
-			action.setActivite(activite);
+public Action addAction(Action action) {
+	
 			return actionrepository.save(action);
 		}
 
 public List<Action> getActions() {
-	return actionrepository.selectActions();
+	return actionrepository.findAll();
 }
 public void updateAction(Action action) {
-
 	actionrepository.getOne(action.getCode()).setAction(action);
 }
 

@@ -19,9 +19,9 @@ import customers.project.demo.services.ActionService;
 public class ActionController {
 	@Autowired
 	ActionService actionservice;
-	@PostMapping("/saveaction/{id_status}/{id_activite}")
-	public void save(@RequestBody Action action,@PathVariable int id_status,@PathVariable long id_activite) {
-		actionservice.addAction(action, id_status, id_activite);
+	@PostMapping("/saveaction")
+	public Action save(@RequestBody Action action) {
+		return actionservice.addAction(action);
 	}
 	@GetMapping("/getactions")
 	public List<Action> getAll() {

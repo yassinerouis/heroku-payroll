@@ -33,18 +33,18 @@ public class Modele implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	public void setModele(Modele modele) {
-		this.setDate_virement(modele.date_virement);
 		this.setLibelle(modele.libelle);
 		this.setReglementation(modele.reglementation);
 		this.setTypepaie(modele.typepaie);
 		this.setFrequence(modele.frequence);
+		this.setTypepopulation(modele.typepopulation);
+		this.setDate_cible(date_cible);
 	}
 	String libelle;
 	String reglementation;
 	
-	int date_virement;
-	@Temporal(TemporalType.DATE)
-	private Date date_creation;
+	int date_cible;
+
 	public TypePaie getTypepaie() {
 		return typepaie;
 	}
@@ -52,15 +52,22 @@ public class Modele implements Serializable{
 		this.typepaie = typepaie;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	private Date date_modification;
+
 	@ManyToOne
 	private Frequence frequence;
-	@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST)
+	@ManyToOne
+
 	private TypePaie typepaie;
-	
+	@ManyToOne
+	private TypePopulation typepopulation;
 	public Frequence getFrequence() {
 		return frequence;
+	}
+	public TypePopulation getTypepopulation() {
+		return typepopulation;
+	}
+	public void setTypepopulation(TypePopulation typepopulation) {
+		this.typepopulation = typepopulation;
 	}
 	public void setFrequence(Frequence frequence) {
 		this.frequence = frequence;
@@ -71,22 +78,13 @@ public class Modele implements Serializable{
 	public void setRespomodele(Set<ResponsabiliteModele> respomodele) {
 		this.respomodele = respomodele;
 	}
-	/*
-	public Set<Suivi> getSuivis() {
-		return suivis;
-	}
-	public void setSuivis(Set<Suivi> suivis) {
-		this.suivis = suivis;
-	}*/
+	
 	
 	@OneToMany(mappedBy = "modele")
 	@JsonIgnore
 
 	private Set<ResponsabiliteModele> respomodele=new HashSet<ResponsabiliteModele>();
-	/*@OneToMany(mappedBy = "modele")
-	@JsonIgnore
-	private Set<Suivi> suivis=new HashSet<Suivi>();*/
-	
+
 	public long getCode_modele() {
 		return code_modele;
 	}
@@ -102,38 +100,16 @@ public class Modele implements Serializable{
 	public String getReglementation() {
 		return reglementation;
 	}
+	public int getDate_cible() {
+		return date_cible;
+	}
+	public void setDate_cible(int date_cible) {
+		this.date_cible = date_cible;
+	}
 	public void setReglementation(String reglementation) {
 		this.reglementation = reglementation;
 	}
 	
-	public int getDate_virement() {
-		return date_virement;
-	}
-	public void setDate_virement(int date_virement) {
-		this.date_virement = date_virement;
-	}
-	public Date getDate_creation() {
-		return date_creation;
-	}
-	public void setDate_creation(Date date_creation) {
-		this.date_creation = date_creation;
-	}
-	public Date getDate_modification() {
-		return date_modification;
-	}
-	public void setDate_modification(Date date_modification) {
-		this.date_modification = date_modification;
-	}
-	
-	public Date getDate_suppression() {
-		return date_suppression;
-	}
-	public void setDate_suppression(Date date_suppression) {
-		this.date_suppression = date_suppression;
-	}
-	
-	
-	@Temporal(TemporalType.DATE)
-	private Date date_suppression;
+
 	
 }

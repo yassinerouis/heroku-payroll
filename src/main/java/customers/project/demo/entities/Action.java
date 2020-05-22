@@ -3,6 +3,8 @@ package customers.project.demo.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,16 +16,29 @@ import javax.persistence.TemporalType;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Action implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long code;
 private String libelle;
-@ManyToOne(fetch = FetchType.LAZY)
+
+@ManyToOne(cascade = CascadeType.MERGE)
 private Activite activite;
+
 private String description;
 
+@ManyToOne(cascade = CascadeType.MERGE)
+private EspaceTravail espacetravail;
+
+public EspaceTravail getEspacetravail() {
+	return espacetravail;
+}
+public void setEspacetravail(EspaceTravail espacetravail) {
+	this.espacetravail = espacetravail;
+}
 public long getCode() {
 	return code;
 }
@@ -39,6 +54,8 @@ public void setAction(Action action) {
 	this.setDescription(action.description);
 	this.setOrdre_affichage(action.ordre_affichage);
 	this.setStatus(action.status);
+	this.setEspacetravail(action.espacetravail);
+	this.setActivite(action.activite);
 }
 public String getLibelle() {
 	return libelle;
@@ -67,7 +84,7 @@ public void setOrdre_affichage(int ordre_affichage) {
 
 private int ordre_affichage;
 
-@ManyToOne
+@ManyToOne(cascade = CascadeType.MERGE)
 private Status status;
 
 

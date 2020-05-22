@@ -53,8 +53,6 @@ public class Phase implements Serializable{
 	public void setActivite(Set<Activite> activite) {
 		this.activite = activite;
 	}
-
-	
 	public Phase() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -67,6 +65,16 @@ public class Phase implements Serializable{
 	String description;
 	@ManyToOne
 	private Famille famille;
+	@ManyToOne
+	private Status status;
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public String getDescription() {
 		return description;
 	}

@@ -29,9 +29,9 @@ public class ResponsabiliteModele implements Serializable{
 	}
 	private Date date_debut;
 	private Date date_fin;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private Utilisateur payrollmanager;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private Modele modele;
 	public Date getDate_debut() {
 		return date_debut;

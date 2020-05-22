@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import customers.project.demo.entities.Modele;
 import customers.project.demo.entities.ResponsabiliteModele;
-import customers.project.demo.services.ModelePhaseService;
 import customers.project.demo.services.ModeleService;
 import customers.project.demo.services.ResponsabiliteModeleService;
 
@@ -26,20 +25,14 @@ public class ModeleController {
 		@Autowired
 		ModeleService modeleservice;
 		@Autowired
-		ModelePhaseService modelephaseservice;
-		@Autowired
 		ResponsabiliteModeleService responsabilitemodeleservice;
 
-		@PostMapping("/savemodele/{type}/{type_paie}/{frequence}/{phases}/{responsable}")
+		@PostMapping("/savemodele/{type}/{responsable}")
 		
-		public void save(@RequestBody Modele modele,@PathVariable int type,@PathVariable int type_paie,@PathVariable int frequence,@PathVariable long phases[],@PathVariable String responsable) {
-			modeleservice.addModele(modele,type,type_paie,frequence);
-			System.out.println(responsable);
-			for(int i=0;i<phases.length;i++) {
-				
-				modelephaseservice.addModelePhase(phases[i], modele.getCode_modele());
-			}
+		public Modele save(@RequestBody Modele modele,@PathVariable int type,@PathVariable String responsable) {
+			Modele m=modeleservice.addModele(modele,type);			
 			responsabilitemodeleservice.addResponsabilite(responsable, modele);
+			return m;
 		}
 		
 		@GetMapping("/getmodeles")
@@ -64,7 +57,6 @@ public class ModeleController {
 		
 		@DeleteMapping("/deleteModele/{id}")
 		public void delete(@PathVariable("id") long id) {
-			System.out.println(id);
 			modeleservice.deleteModele(id);
 		}		
 }

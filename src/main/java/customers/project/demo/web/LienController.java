@@ -67,24 +67,24 @@ public class LienController {
 		} 
 		
 	}
-	@DeleteMapping("/deleteLien/{id}")
+	@DeleteMapping("/deleteLienHorizontal/{id}")
 	public void delete(@PathVariable("id") int id) {
 		Lienservice.deleteLien(id);
 	}
+	@DeleteMapping("/deleteLienVertical/{id}")
+	public void deleteVertical(@PathVariable("id") int id) {
+		Lienservice.deleteLien(id);
+	}
 	@PostMapping("/menuvertical/saveLien")
-	public void savevertical(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {
+	public Lien savevertical(@RequestBody Lien lien) {
 		try {
-			Lien lien = new ObjectMapper().readValue(lien_menu,Lien.class);
-			StringBuilder fileNames = new StringBuilder();
-			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
-			fileNames.append(file.getOriginalFilename()+" ");
-			Files.write(fileNameAndPath, file.getBytes());
 			lien.setMenu("V");
 			Lienservice.addLien(lien);
-		} catch (Exception e) {
+			} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		return lien;
 	}
 	@GetMapping("/menuVertical/getLiens")
 	public List<Lien> getAllVertical() {

@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,15 +31,16 @@ public class Activite implements Serializable{
 	}
 	public void setActivite(Activite activite) {
 		this.setDescription(activite.description);
-		this.setEcheance(activite.echeance);
 		this.setFonction(activite.fonction);
 		this.setLibelle(activite.libelle);
 		this.setOrdre_affichage(activite.ordre_affichage);
-		this.setOrdre_affichage(activite.ordre_affichage);
-		this.setVue_ensemble(activite.vue_ensemble);
 		this.setPilotage(activite.pilotage);
-		this.setPeriodicite(activite.periodicite);
+		this.setMode_activite(activite.mode_activite);
+		this.setFrequence(activite.frequence);
+		this.setStatus(activite.status);
 		this.setPrecedente(activite.prerequis);
+		this.setPhase(activite.phase);
+		this.setResponsable(activite.responsable);
 	}
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,35 +59,14 @@ public class Activite implements Serializable{
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		
-		public Date getDate_creation() {
-			return date_creation;
-		}
-		public void setDate_creation(Date date_creation) {
-			this.date_creation = date_creation;
-		}
-		public Date getDate_modification() {
-			return date_modification;
-		}
-		public void setDate_modification(Date date_modification) {
-			this.date_modification = date_modification;
-		}
-		public Date getDate_suppression() {
-			return date_suppression;
-		}
-		public void setDate_suppression(Date date_suppression) {
-			this.date_suppression = date_suppression;
-		}
 		public Phase getPhase() {
 			return phase;
 		}
 		public void setPhase(Phase phase) {
 			this.phase = phase;
 		}
-	
 	private String libelle;
 	private String description;
-	private String famille;
 	private boolean pilotage;
 	private String fonction;
 	private String mode_activite;
@@ -106,12 +86,7 @@ public class Activite implements Serializable{
 	public void setCode_activite(long code_activite) {
 		this.code_activite = code_activite;
 	}
-	public String getFamille() {
-		return famille;
-	}
-	public void setFamille(String famille) {
-		this.famille = famille;
-	}
+	
 	public boolean isPilotage() {
 		return pilotage;
 	}
@@ -136,31 +111,22 @@ public class Activite implements Serializable{
 	public void setOrdre_affichage(int ordre_affichage) {
 		this.ordre_affichage = ordre_affichage;
 	}
-	public String getPeriodicite() {
-		return periodicite;
-	}
-	public void setPeriodicite(String periodicite) {
-		this.periodicite = periodicite;
-	}
 	
-	public String getVue_ensemble() {
-		return vue_ensemble;
+	public Frequence getFrequence() {
+		return frequence;
 	}
-	public void setVue_ensemble(String vue_ensemble) {
-		this.vue_ensemble = vue_ensemble;
+	public void setFrequence(Frequence frequence) {
+		this.frequence = frequence;
 	}
-	
-	private String periodicite;
-	private String vue_ensemble;
-	@Temporal(TemporalType.DATE)
-	private Date date_creation;
-	@Temporal(TemporalType.DATE)
-	private Date date_modification;
-	@Temporal(TemporalType.DATE)
-	private Date date_suppression;
-	@ManyToOne(fetch = FetchType.LAZY)
+	public void setPrerequis(Set<Activite> prerequis) {
+		this.prerequis = prerequis;
+	}
+
+	@ManyToOne
+	private Frequence frequence;
+	@ManyToOne
 	private Phase phase;
-	@OneToMany
+	@ManyToMany
 	@JsonIgnore
 	private Set<Activite> prerequis;
 	public Set<Activite> getPrerequis() {
@@ -169,8 +135,13 @@ public class Activite implements Serializable{
 	public void setPrecedente(Set<Activite> prerequis) {
 		this.prerequis = prerequis;
 	}
-
-	
+private String responsable;
+	public String getResponsable() {
+	return responsable;
+}
+public void setResponsable(String responsable) {
+	this.responsable = responsable;
+}
 	public Status getStatus() {
 		return status;
 	}

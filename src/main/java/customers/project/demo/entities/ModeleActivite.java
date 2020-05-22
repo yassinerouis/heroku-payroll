@@ -2,6 +2,7 @@ package customers.project.demo.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,17 +37,17 @@ public Utilisateur getResponsable() {
 public void setResponsable(Utilisateur responsable) {
 	this.responsable = responsable;
 }
+
 int echeance;
-@OneToOne
+@ManyToOne
 private Utilisateur responsable;
 public void setId(Long id) {
 	this.id = id;
 }
-@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST,fetch = FetchType.LAZY)
+@ManyToOne
 private Modele modele;
-@ManyToOne(cascade = javax.persistence.CascadeType.PERSIST,fetch = FetchType.LAZY)
+@ManyToOne
 private Activite Activite;
-
 public Activite getActivite() {
 	return Activite;
 }
@@ -58,5 +59,15 @@ public Modele getModele() {
 }
 public void setModele(Modele modele) {
 	this.modele = modele;
+}
+
+@ManyToOne
+private Phase phase;
+
+public Phase getPhase() {
+	return phase;
+}
+public void setPhase(Phase phase) {
+	this.phase = phase;
 }
 }

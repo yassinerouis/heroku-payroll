@@ -26,29 +26,24 @@ public class PhaseService {
 	FamilleRepository famillerepository;
 	@Autowired
 	ActiviteRepository activiterepository;
-public Phase addPhase(Phase phase,int famille) {
-		Famille fam=famillerepository.getOne(famille);
-		Date date= new Date();
+public Phase addPhase(Phase phase) {
 		
-		phase.setDate_creation(date);
-		phase.setFamille(fam);
 		return phaserepository.save(phase);
 	}
 
 public List<Phase> getPhases() {
 	return phaserepository.selectPhases();
 }
-public Set<Activite> getActivites(Phase phase){
-	return phaserepository.getOne(phase.getCode_phase()).getActivite();
+public Set<Activite> getActivites(long phase){
+	return phaserepository.getOne(phase).getActivite();
 }
 public void updatePhase(Phase phase) {
-	Date date_modification= new Date();
-	phaserepository.getOne(phase.getCode_phase()).setDate_modification(date_modification);
-	phaserepository.getOne(phase.getCode_phase()).setPhase(phase);
+	phaserepository.getOne(phase.getCode_phase()).setLibelle(phase.getLibelle());
+	phaserepository.getOne(phase.getCode_phase()).setDescription(phase.getDescription());
+	phaserepository.getOne(phase.getCode_phase()).setFamille(phase.getFamille());
+	phaserepository.getOne(phase.getCode_phase()).setStatus(phase.getStatus());
 }
-
 public void deletePhase(long id) {
-	Date date_suppression= new Date();
-
-phaserepository.getOne(id).setDate_suppression(date_suppression);}
+	phaserepository.delete(phaserepository.getOne(id));
+}
 }

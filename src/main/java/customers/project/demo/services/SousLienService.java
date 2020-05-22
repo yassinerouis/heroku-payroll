@@ -24,10 +24,9 @@ public class SousLienService {
 	}
 	public void updatesousLien(SousLien sousLien) {
 		sousLienrepository.getOne(sousLien.getId()).setOrdre_affichage(sousLien.getOrdre_affichage());
+		sousLienrepository.getOne(sousLien.getId()).setRoles(sousLien.getRoles());
 	}
 	public void deletesousLien(Integer id) {
 		sousLienrepository.deleteById(id);
 	}
-
-
 }

@@ -35,4 +35,24 @@ public class SousLienController {
 			e.printStackTrace();
 		}
 	}
+	@PostMapping("/menuVertical/addSousLien")
+	public void addSousLienVertical(@RequestBody List<SousLien> sous_lien) {
+		try {
+			for(int i=0;i<sous_lien.size();i++) {
+				souslienservice.addsousLien(sous_lien.get(i));
+			}
+			} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@DeleteMapping("/deleteSousLiens/{id}")
+	public void deleteVertical(@PathVariable("id") int id) {
+		try {
+			souslienservice.deletesousLien(id);
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

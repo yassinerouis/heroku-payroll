@@ -22,9 +22,9 @@ import customers.project.demo.services.PhaseService;
 public class PhaseController {
 	@Autowired
 	PhaseService phaseservice;
-	@PostMapping("/savephase/{famille}")
-	public void savePhase(@RequestBody Phase phase,@PathVariable int famille) {
-		phaseservice.addPhase(phase,famille);
+	@PostMapping("/savephase")
+	public void savePhase(@RequestBody Phase phase) {
+		phaseservice.addPhase(phase);
 	}
 	
 	@GetMapping("/getphases")
@@ -32,7 +32,7 @@ public class PhaseController {
 		return phaseservice.getPhases();
 	}
 	@GetMapping("/getactivities")
-	public Set<Activite> getActivities(@RequestBody Phase phase) {
+	public Set<Activite> getActivities(@RequestBody long phase) {
 		return phaseservice.getActivites(phase);
 	}
 	
