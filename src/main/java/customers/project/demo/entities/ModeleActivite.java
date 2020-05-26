@@ -60,7 +60,14 @@ public Modele getModele() {
 public void setModele(Modele modele) {
 	this.modele = modele;
 }
-
+public void setModeleActivite(ModeleActivite modeleactivite) {
+	this.setActivite(modeleactivite.Activite);
+	this.setEcheance(modeleactivite.echeance);
+	this.setModele(modeleactivite.modele);
+	this.setOrdre(modeleactivite.ordre);
+	this.setResponsable(modeleactivite.responsable);
+	this.setPhase(modeleactivite.phase);
+}
 @ManyToOne
 private Phase phase;
 

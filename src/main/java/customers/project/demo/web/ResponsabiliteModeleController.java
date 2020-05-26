@@ -16,8 +16,8 @@ import customers.project.demo.services.ResponsabiliteModeleService;
 public class ResponsabiliteModeleController {
 	@Autowired
 	ResponsabiliteModeleService responsabilitemodeleservice;
-	@PostMapping("/saveResponsabiliteModele/{modele}/{responsable}")
+	/*@PostMapping("/saveResponsabiliteModele/{modele}/{responsable}")
 	public void save(@PathVariable long modele,@PathVariable String responsable) {
 		responsabilitemodeleservice.addResponsabilite(responsable, modele);
-	}
+	}*/
 }

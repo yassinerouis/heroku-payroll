@@ -40,7 +40,7 @@ public ResponsabiliteModele getResponsable(long modele) {
 
 
 public void updateResponsabilite(Modele modele,String responsable) {
-	if(responsabilitemodelerepository.selectResponsabilite(modele.getCode_modele()).getPayrollmanager().getMatricule()!=responsable) {
+	if(!responsabilitemodelerepository.selectResponsabilite(modele.getCode_modele()).getPayrollmanager().getMatricule().equals(responsable)) {
 		ResponsabiliteModele responsabilitemodele=new ResponsabiliteModele();
 		Date date= new Date();
 		responsabilitemodelerepository.selectResponsabilite(modele.getCode_modele()).setDate_fin(date);

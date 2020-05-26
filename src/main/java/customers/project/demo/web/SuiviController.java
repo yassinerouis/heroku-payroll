@@ -24,7 +24,7 @@ public class SuiviController {
 	SuiviService suiviservice;
 	@GetMapping("/getpopulations/{modele}")
 	public Set<Population> getPopulations(@PathVariable long modele) {
-		return modeleservice.getPopulations(modele);
+		 return modeleservice.getPopulations(modele);
 	}
 	@GetMapping("/getsuivis")
 	public void getSuivis() {

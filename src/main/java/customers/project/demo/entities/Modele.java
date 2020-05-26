@@ -59,6 +59,7 @@ public class Modele implements Serializable{
 
 	private TypePaie typepaie;
 	@ManyToOne
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private TypePopulation typepopulation;
 	public Frequence getFrequence() {
 		return frequence;

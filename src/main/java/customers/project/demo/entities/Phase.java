@@ -82,10 +82,6 @@ public class Phase implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Temporal(TemporalType.DATE)
-	private Date date_creation;
-	@Temporal(TemporalType.DATE)
-	private Date date_modification;
 	
 	public String getLibelle() {
 		return libelle;
@@ -94,30 +90,9 @@ public class Phase implements Serializable{
 		this.libelle = libelle;
 	}
 	
-	public Date getDate_creation() {
-		return date_creation;
-	}
-	public void setDate_creation(Date date_creation) {
-		this.date_creation = date_creation;
-	}
-	public Date getDate_modification() {
-		return date_modification;
-	}
-	public void setDate_modification(Date date_modification) {
-		this.date_modification = date_modification;
-	}
-	
-	public Date getDate_suppression() {
-		return date_suppression;
-	}
-	public void setDate_suppression(Date date_suppression) {
-		this.date_suppression = date_suppression;
-	}
-	
 	@OneToMany(mappedBy = "phase")
 	@JsonIgnore
 	private Set<Activite> activite=new HashSet<Activite>();
-	@Temporal(TemporalType.DATE)
-	private Date date_suppression;
+	
 	
 }

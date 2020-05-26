@@ -49,6 +49,7 @@ public class ModeleService {
 	ModeleActiviteRepository modeleactiviterepository;
 	@Autowired
 	ResponsabiliteModeleRepository responsabilitemodelerepository;
+	@Autowired
 	PopulationRepository populationrepository;
 	public Modele addModele(Modele modele,int type) {
 		modelerepository.save(modele);
@@ -56,6 +57,7 @@ public class ModeleService {
 		PopulationModele pm=new PopulationModele();
 		Date date= new Date();
 		pm.setDate_debut(date);
+		pm.setDate_fin(null);
 		pm.setModele(modele);
 		pm.setTypepopulation(typepopulation);
 		pmrepo.save(pm);
@@ -65,9 +67,28 @@ public class ModeleService {
 	public List<Modele> getModeles() {
 		return modelerepository.selectModeles();
 	}
-	
-	public void updateModele(Modele modele) {
+	public Modele updateModele(Modele modele,int type) {
+		TypePopulation typepopulation=typepoprepository.getOne(type);
+		PopulationModele pm=new PopulationModele();
+		List<PopulationModele>pmlist= pmrepo.findAll();
+		System.out.println(type);
+		System.out.println(modele.getTypepopulation().getIdentifiant());
+		if(type!=modele.getTypepopulation().getIdentifiant()) {
+			Date date= new Date();
+			for(int i=0;i<pmlist.size();i++) {
+				if(pmlist.get(i).getDate_fin()==null) {
+					pmlist.get(i).setDate_fin(date);
+				}
+			}
+			pm.setDate_debut(date);
+			pm.setModele(modele);
+			pm.setTypepopulation(typepopulation);
+			pmrepo.save(pm);
+			modele.setTypepopulation(typepopulation);
+		}
+		
 		modelerepository.getOne(modele.getCode_modele()).setModele(modele);
+		return modelerepository.getOne(modele.getCode_modele());
 	}
 	
 	public void deleteModele(long id) {
@@ -98,7 +119,8 @@ public class ModeleService {
 	}
 	
 	public Set<Population> getPopulations(long Modele) {
-		TypePopulation population=populationmodelerepository.selectPopulation(Modele).getPopulation();
+		TypePopulation population=modelerepository.getOne(Modele).getTypepopulation();
+		
 		return populationrepository.findPopulations(population.getIdentifiant());
 	}
 }

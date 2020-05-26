@@ -39,21 +39,19 @@ public class ModeleController {
 		public List<Modele> getAll() {
 			return modeleservice.getModeles();
 		}
-		@GetMapping("/getresponsablemodele")
-		public ResponsabiliteModele getAll(Modele modele) {
-			return responsabilitemodeleservice.getResponsable(modele.getCode_modele());
+		@GetMapping("/getresponsablemodele/{id_modele}")
+		public ResponsabiliteModele getResponsable(@PathVariable long id_modele) {
+			return responsabilitemodeleservice.getResponsable(id_modele);
 		}
 		
-		@PutMapping("/updateModele/{responsable}")
-		public void updateModeleRespo(@RequestBody Modele modele,@PathVariable String responsable) {
+		@PutMapping("/updatemodele/{type}/{responsable}")
+		public Modele updateModeleRespo(@RequestBody Modele modele,@PathVariable int type,@PathVariable String responsable) {
 			System.out.println(responsable);
-			modeleservice.updateModele(modele);
+			Modele m=modeleservice.updateModele(modele,type);
 			responsabilitemodeleservice.updateResponsabilite(modele, responsable);
+			return m;
 		}
-		@PutMapping("/updateModele")
-		public void updateModele(@RequestBody Modele modele) {
-			modeleservice.updateModele(modele);
-		}
+		
 		
 		@DeleteMapping("/deleteModele/{id}")
 		public void delete(@PathVariable("id") long id) {
