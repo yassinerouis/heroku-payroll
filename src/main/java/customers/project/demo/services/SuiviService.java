@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import customers.project.demo.dao.ActiviteRepository;
 import customers.project.demo.dao.SuiviRepository;
 import customers.project.demo.entities.Activite;
+import customers.project.demo.entities.ModeleSuivi;
 import customers.project.demo.entities.Suivi;
 
 @Service
@@ -22,8 +23,9 @@ SuiviRepository suivirepository;
 @Autowired
 ActiviteRepository activiterepository;
 public void savesuivi(Suivi suivi) {
-	Date date_creation= new Date();
-	suivi.setDate_creation(date_creation);
 	suivirepository.save(suivi);
+}
+public List<ModeleSuivi> getsuivi() {
+	return suivirepository.selectModele();
 }
 }

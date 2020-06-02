@@ -65,7 +65,10 @@ public class ModeleService {
 	}
 	
 	public List<Modele> getModeles() {
-		return modelerepository.selectModeles();
+		return modelerepository.findAll();
+	}
+	public Modele getModele(long id) {
+		return modelerepository.getOne(id);
 	}
 	public Modele updateModele(Modele modele,int type) {
 		TypePopulation typepopulation=typepoprepository.getOne(type);
@@ -120,7 +123,7 @@ public class ModeleService {
 	
 	public Set<Population> getPopulations(long Modele) {
 		TypePopulation population=modelerepository.getOne(Modele).getTypepopulation();
-		
+		System.out.println(population.getLibelle());
 		return populationrepository.findPopulations(population.getIdentifiant());
 	}
 }

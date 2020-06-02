@@ -36,5 +36,9 @@ public class ActionController {
 	@DeleteMapping("/deleteaction/{id}")
 	public void delete(@PathVariable("id") long id) {
 		actionservice.deleteAction(id);
-	}		
+	}	
+	@GetMapping("/selectactions/{activite}")
+	public List<Action> selectActions(@PathVariable("activite") long activite) {
+		return actionservice.selectActions(activite);
+	}	
 }

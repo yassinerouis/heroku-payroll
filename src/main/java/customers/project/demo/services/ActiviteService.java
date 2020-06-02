@@ -51,6 +51,7 @@ public Activite addFirstActivite(Activite activite,int id_status,long id_phase,i
 public Activite getActivite(Long id) {
 	return activiterepository.getOne(id);
 }
+
 public List<Activite> getActivites() {
 	return activiterepository.findAll();
 }

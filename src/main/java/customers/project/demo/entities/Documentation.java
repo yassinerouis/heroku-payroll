@@ -18,10 +18,14 @@ public class Documentation implements Serializable{
 	private String nom;
 	private String titre;
 	private String type;
-	private String pays;
+	@ManyToOne
+	private Pays pays;
 	private String file;
 	public int getIdentifiant() {
 		return identifiant;
+	}
+	public void setPays(Pays pays) {
+		this.pays = pays;
 	}
 	public void setIdentifiant(int identifiant) {
 		this.identifiant = identifiant;
@@ -44,11 +48,9 @@ public class Documentation implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getPays() {
+	
+	public Pays getPays() {
 		return pays;
-	}
-	public void setPays(String pays) {
-		this.pays = pays;
 	}
 	public String getFile() {
 		return file;

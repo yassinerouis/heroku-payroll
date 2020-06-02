@@ -32,7 +32,7 @@ import customers.project.demo.services.DocumentationService;
 @RestController
 @CrossOrigin
 public class DocumentationController {
-	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/";
+	public String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/";
 	@Autowired
 	DocumentationService documentationservice;
 	@PostMapping("/saveDocument")
@@ -40,6 +40,15 @@ public class DocumentationController {
 		
 		try {
 			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
+			if(documentation.getType().equals("CGI")) {
+				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/CGI";
+			}else if(documentation.getType().equals("Code de travail")) {
+				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/CT";
+			}else if(documentation.getType().equals("Convention collective")) {
+				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/CC";
+			}else if(documentation.getType().equals("Paramétrage de la paie")) {
+				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/PP";
+			}
 			StringBuilder fileNames = new StringBuilder();
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			  fileNames.append(file.getOriginalFilename()+" ");

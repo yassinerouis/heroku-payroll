@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
-import customers.project.demo.dao.ModeleRepository;
 import customers.project.demo.dao.ResponsabiliteModeleRepository;
 import customers.project.demo.dao.UtilisateurRepository;
 import customers.project.demo.entities.Modele;

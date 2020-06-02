@@ -29,6 +29,9 @@ public class PopulationService {
 			return populationrepository.save(population);
 		}
 		
+		public Population getPopulation(int id) {
+			return populationrepository.getOne(id);
+		}
 		public List<Population> getPopulations() {
 			return populationrepository.findAll();
 		}

@@ -13,16 +13,27 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
 @Entity
 public class Suivi implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long code;
+	int year;
+	int month;
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
+	public int getMonth() {
+		return month;
+	}
+	public void setMonth(int month) {
+		this.month = month;
+	}
 	@Temporal(TemporalType.DATE)
-	private Date date_creation;
-	@Temporal(TemporalType.DATE)
-private Date date_fin;
+private Date date_suppression;
 @ManyToOne(fetch = FetchType.LAZY)
 private ModeleSuivi modele;
 @ManyToOne
@@ -45,16 +56,11 @@ public long getCode() {
 public void setCode(long code) {
 	this.code = code;
 }
-public Date getDate_creation() {
-	return date_creation;
+
+public Date getDate_suppression() {
+	return date_suppression;
 }
-public void setDate_creation(Date date_creation) {
-	this.date_creation = date_creation;
-}
-public Date getDate_fin() {
-	return date_fin;
-}
-public void setDate_fin(Date date_fin) {
-	this.date_fin = date_fin;
+public void setDate_suppression(Date date_suppression) {
+	this.date_suppression = date_suppression;
 }
 }

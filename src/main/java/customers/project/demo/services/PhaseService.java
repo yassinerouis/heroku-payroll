@@ -32,7 +32,9 @@ public Phase addPhase(Phase phase) {
 	}
 
 public List<Phase> getPhases() {
-	return phaserepository.selectPhases();
+	return phaserepository.findAll();}
+public Phase getPhase(long id) {
+	return phaserepository.getOne(id);
 }
 public Set<Activite> getActivites(long phase){
 	return phaserepository.getOne(phase).getActivite();
@@ -46,4 +48,5 @@ public void updatePhase(Phase phase) {
 public void deletePhase(long id) {
 	phaserepository.delete(phaserepository.getOne(id));
 }
+
 }

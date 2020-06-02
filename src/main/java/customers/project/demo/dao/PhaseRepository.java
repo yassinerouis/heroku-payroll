@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import customers.project.demo.entities.Phase;
 
 public interface PhaseRepository extends JpaRepository<Phase,Long>{
-	@Query("FROM Phase where date_suppression is null")
-	public List<Phase> selectPhases();
+	
 	
 }

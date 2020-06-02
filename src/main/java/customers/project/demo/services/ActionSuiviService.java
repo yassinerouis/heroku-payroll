@@ -8,38 +8,40 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import customers.project.demo.dao.PaysRepository;
+import customers.project.demo.dao.ActionRepository;
+import customers.project.demo.dao.ActionSuiviRepository;
 import customers.project.demo.dao.ActiviteRepository;
 import customers.project.demo.dao.EspaceTravailRepository;
 import customers.project.demo.dao.StatusRepository;
-import customers.project.demo.entities.Pays;
+import customers.project.demo.entities.Action;
+import customers.project.demo.entities.ActionSuivi;
 import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.EspaceTravail;
 import customers.project.demo.entities.Status;
 
 @Service
 @Transactional
-public class PaysService {
+public class ActionSuiviService {
 @Autowired
-PaysRepository paysrepository;
+ActionSuiviRepository actionsuivirepository;
 @Autowired
 ActiviteRepository activiterepository;
 
 @Autowired
 StatusRepository statusrepository;
-	public Pays addPays(Pays pays) {
-			return paysrepository.save(pays);
+public ActionSuivi addActionSuivi(ActionSuivi actionsuivi) {
+			return actionsuivirepository.save(actionsuivi);
 		}
 
-public List<Pays> getPays() {
-	return paysrepository.findAll();
+public List<ActionSuivi> getActions() {
+	return actionsuivirepository.findAll();
 }
-public void updatePays(Pays pays) {
-	paysrepository.getOne(pays.getCode()).setLibelle(pays.getLibelle());
-	paysrepository.getOne(pays.getCode()).setReglementation(pays.getReglementation());
-	paysrepository.getOne(pays.getCode()).setLogo(pays.getLogo());
+public void updateAction(ActionSuivi actionsuivi) {
+	actionsuivirepository.getOne(actionsuivi.getCode()).setAction(actionsuivi);
 }
-public void deletePays(int id) {
-	paysrepository.deleteById(id);
+
+public void deleteAction(long id) {
+	actionsuivirepository.deleteById(id);
 }
+
 }

@@ -35,6 +35,10 @@ public Action addAction(Action action) {
 public List<Action> getActions() {
 	return actionrepository.findAll();
 }
+public List<Action> selectActions(long id_activite) {
+	Activite activite=activiterepository.getOne(id_activite);
+	return actionrepository.selectActions(activite);
+}
 public void updateAction(Action action) {
 	actionrepository.getOne(action.getCode()).setAction(action);
 }

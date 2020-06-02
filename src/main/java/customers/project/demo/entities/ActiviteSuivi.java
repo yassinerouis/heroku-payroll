@@ -5,12 +5,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,17 +30,35 @@ public class ActiviteSuivi implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public void setActivite(ActiviteSuivi activiteSuivi) {
-		this.setDescription(activiteSuivi.description);
-		this.setEcheance(activiteSuivi.echeance);
-		this.setFonction(activiteSuivi.fonction);
-		this.setLibelle(activiteSuivi.libelle);
+	public void setActivite(ActiviteSuivi activiteSuivi,Activite activite) {
+		this.setDescription(activite.getDescription());
+		this.setEcheance(activiteSuivi.date_echeance);
+		this.setFonction(activite.getFonction());
+		this.setLibelle(activite.getLibelle());
 		this.setOrdre_affichage(activiteSuivi.ordre_affichage);
-		this.setOrdre_affichage(activiteSuivi.ordre_affichage);
-		this.setVue_ensemble(activiteSuivi.vue_ensemble);
-		this.setPilotage(activiteSuivi.pilotage);
-		this.setPeriodicite(activiteSuivi.periodicite);
-		this.setPrecedente(activiteSuivi.precedente);
+		this.setResponsable(activiteSuivi.responsable);
+		this.setPilotage(activite.isPilotage());
+		this.setPeriodicite(activiteSuivi.getPeriodicite());
+		this.setEspacetravail(activite.getEspacetravail());
+	}
+	public void setActiviteModele(ModeleActivite activite) {
+		this.setDescription(activite.getActivite().getDescription());
+		this.setFonction(activite.getActivite().getFonction());
+		this.setLibelle(activite.getActivite().getLibelle());
+		this.setOrdre_affichage(activite.getOrdre());
+		this.setPilotage(activite.getActivite().isPilotage());
+		this.setPeriodicite(activite.getActivite().getFrequence());
+		this.setMode_activite(activite.getActivite().getMode_activite());
+		this.setEspacetravail(activite.getActivite().getEspacetravail());
+	}
+	public void setActiviteX(Activite activite) {
+		this.setDescription(activite.getDescription());
+		this.setFonction(activite.getFonction());
+		this.setLibelle(activite.getLibelle());
+		this.setPilotage(activite.isPilotage());
+		this.setPeriodicite(activite.getFrequence());
+		this.setMode_activite(activite.getMode_activite());
+		this.setEspacetravail(activite.getEspacetravail());
 	}
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,22 +78,33 @@ public class ActiviteSuivi implements Serializable{
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		
-		
 		public PhaseSuivi getPhase() {
 			return phasesuivi;
 		}
 		public void setPhase(PhaseSuivi phase) {
 			this.phasesuivi = phase;
 		}
-	
+	private long activite_principale;
 	private String libelle;
+	public long getActivite_principale() {
+		return activite_principale;
+	}
+	public void setActivite_principale(long activite_principale) {
+		this.activite_principale = activite_principale;
+	}
 	private String description;
 	private String famille;
 	private boolean pilotage;
 	private String fonction;
+	private String statut;
 	private String mode_activite;
 	private int ordre_affichage;
+	public String getStatut() {
+		return statut;
+	}
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
 	@ManyToOne
 	private EspaceTravail espacetravail;
 	public Set<Commentaire> getCommentaire() {
@@ -125,17 +155,18 @@ public class ActiviteSuivi implements Serializable{
 	public void setOrdre_affichage(int ordre_affichage) {
 		this.ordre_affichage = ordre_affichage;
 	}
-	public String getPeriodicite() {
+	
+	public Frequence getPeriodicite() {
 		return periodicite;
 	}
-	public void setPeriodicite(String periodicite) {
+	public void setPeriodicite(Frequence periodicite) {
 		this.periodicite = periodicite;
 	}
-	public int getEcheance() {
-		return echeance;
+	public Date getEcheance() {
+		return date_echeance;
 	}
-	public void setEcheance(int echeance) {
-		this.echeance = echeance;
+	public void setEcheance(Date echeance) {
+		this.date_echeance = echeance;
 	}
 	public String getVue_ensemble() {
 		return vue_ensemble;
@@ -143,21 +174,45 @@ public class ActiviteSuivi implements Serializable{
 	public void setVue_ensemble(String vue_ensemble) {
 		this.vue_ensemble = vue_ensemble;
 	}
-	
-	private String periodicite;
-	private int echeance;
+	@ManyToOne
+	private Frequence periodicite;
+	@Temporal(TemporalType.DATE)
+	private Date date_echeance;
 	private String vue_ensemble;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private PhaseSuivi phasesuivi;
-	@OneToOne
+	@ManyToMany
 	@JsonIgnore
-	private Activite precedente;
-	public Activite getPrecedente() {
-		return precedente;
+	private Set<ActiviteSuivi> prerequis;
+	public PhaseSuivi getPhasesuivi() {
+		return phasesuivi;
 	}
-	public void setPrecedente(Activite precedente) {
-		this.precedente = precedente;
+	public void setPhasesuivi(PhaseSuivi phasesuivi) {
+		this.phasesuivi = phasesuivi;
+	}
+	public Set<ActiviteSuivi> getPrerequis() {
+		return prerequis;
+	}
+	public void setPrerequis(Set<ActiviteSuivi> prerequis) {
+		this.prerequis = prerequis;
+	}
+	public Utilisateur getResponsable() {
+		return responsable;
+	}
+	public void setResponsable(Utilisateur responsable) {
+		this.responsable = responsable;
+	}
+	public int getOrdre() {
+		return ordre;
+	}
+	public void setOrdre(int ordre) {
+		this.ordre = ordre;
+	}
+	public Suivi getSuivi() {
+		return suivi;
+	}
+	public void setSuivi(Suivi suivi) {
+		this.suivi = suivi;
 	}
 	public Status getStatus() {
 		return status;
@@ -165,10 +220,9 @@ public class ActiviteSuivi implements Serializable{
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-
 	@ManyToOne
 	private Status status;
-	@OneToOne
+	@ManyToOne
 	private Utilisateur responsable;
 	private int ordre;
 	@OneToOne

@@ -1,5 +1,6 @@
 package customers.project.demo.entities;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,16 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,22 +22,40 @@ public class ModeleSuivi implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	long code_modele;
-	
+	@ManyToOne
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	private TypePopulation typepopulation;
+	public TypePopulation getTypepopulation() {
+		return typepopulation;
+	}
+	public void setTypepopulation(TypePopulation typepopulation) {
+		this.typepopulation = typepopulation;
+	}
 	public ModeleSuivi() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public void setModele(ModeleSuivi modelesuivi) {
-		this.setDate_virement(modelesuivi.date_virement);
+		this.setcible(modelesuivi.cible);
 		this.setLibelle(modelesuivi.libelle);
 		this.setReglementation(modelesuivi.reglementation);
 		this.setTypepaie(modelesuivi.typepaie);
 		this.setFrequence(modelesuivi.frequence);
 	}
+	public void setModeleSuivi(Modele modele) {
+		Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), modele.getDate_cible());
+		this.setcible(calendar.getTime());
+		this.setLibelle(modele.getLibelle());
+		this.setReglementation(modele.getReglementation());
+		this.setTypepaie(modele.getTypepaie());
+		this.setTypepopulation(modele.getTypepopulation());
+		this.setFrequence(modele.getFrequence());
+	}
 	String libelle;
 	String reglementation;
-	
-	int date_virement;
+	@Temporal(TemporalType.DATE)
+	Date cible;
 	@Temporal(TemporalType.DATE)
 	private Date date_creation;
 	public TypePaie getTypepaie() {
@@ -85,7 +98,7 @@ public class ModeleSuivi implements Serializable{
 	@OneToMany(mappedBy = "modele")
 	@JsonIgnore
 	private Set<Suivi> suivis=new HashSet<Suivi>();
-	
+	@Temporal(TemporalType.DATE)
 	public long getCode_modele() {
 		return code_modele;
 	}
@@ -105,11 +118,11 @@ public class ModeleSuivi implements Serializable{
 		this.reglementation = reglementation;
 	}
 	
-	public int getDate_virement() {
-		return date_virement;
+	public Date getcible() {
+		return cible;
 	}
-	public void setDate_virement(int date_virement) {
-		this.date_virement = date_virement;
+	public void setcible(Date cible) {
+		this.cible = cible;
 	}
 	public Date getDate_creation() {
 		return date_creation;
@@ -130,9 +143,13 @@ public class ModeleSuivi implements Serializable{
 	public void setDate_suppression(Date date_suppression) {
 		this.date_suppression = date_suppression;
 	}
-	
-	
 	@Temporal(TemporalType.DATE)
 	private Date date_suppression;
-	
+	long modele_principal;
+	public long getModele_principal() {
+		return modele_principal;
+	}
+	public void setModele_principal(long modele_principal) {
+		this.modele_principal = modele_principal;
+	}
 }

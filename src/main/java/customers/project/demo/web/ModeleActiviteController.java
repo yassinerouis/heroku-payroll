@@ -36,7 +36,7 @@ public class ModeleActiviteController {
 	@PutMapping("/updateModeleActivities")
 	public void update(@RequestBody List<ModeleActivite> modeleactivites) {
 		List<ModeleActivite> existModeleActivities=modeleactiviteservice.selectModeleActivities(modeleactivites.get(0).getModele());
-		
+		System.out.println(modeleactivites.get(0).getModele().getCode_modele());
 		for(int i=0;i<modeleactivites.size();i++) {
 			for(int j=0;j<existModeleActivities.size();j++) {
 				if(existModeleActivities.get(j).getId()!=modeleactivites.get(i).getId()) {
@@ -47,15 +47,14 @@ public class ModeleActiviteController {
 			}
 		}
 		int inc;
-		
 		for(int i=0;i<existModeleActivities.size();i++) {
 			inc=0;
 			for(int j=0;j<modeleactivites.size();j++) {
 				if(modeleactivites.get(j).getId()!=existModeleActivities.get(i).getId()) {
 					inc++;
+					System.out.println("i"+modeleactivites.get(j).getId());
 			}
-				int size=existModeleActivities.size()-1;
-				if (inc==size){
+				if (inc==modeleactivites.size()){
 					modeleactiviteservice.delete(existModeleActivities.get(i).getId());
 				}
 			}
@@ -67,34 +66,11 @@ public class ModeleActiviteController {
 	}
 	@GetMapping("/getActivities/{id_modele}")
 	public List<Activite> getActivities(@PathVariable long id_modele) {
-		Modele modele=modeleactiviteservice.getModele(id_modele);
-		List<Activite> listActivities=new ArrayList<Activite>();
-		for(int i=0;i<modeleactiviteservice.selectModeleActivities(modele).size();i++) {
-			listActivities.add(modeleactiviteservice.selectModeleActivities(modele).get(i).getActivite());
-		}
-		return listActivities;
+	return modeleactiviteservice.getActivities(id_modele);
 	}
 	@GetMapping("/getPhases/{id_modele}")
 	public List<Long> getPhases(@PathVariable long id_modele) {
-		Modele modele=modeleactiviteservice.getModele(id_modele);
-		List<Activite> listActivities=this.getActivities(modele.getCode_modele());
-		List<Long> listPhases=new ArrayList<Long>();
-		for(int i=0;i<listActivities.size();i++) {
-			if(listPhases.size()==0) {
-				listPhases.add(listActivities.get(i).getPhase().getCode_phase());
-			}
-			else {
-				int non=0;
-				for(int j=0;j<listPhases.size();j++) {
-					if(listPhases.get(j)!=listActivities.get(i).getPhase().getCode_phase()) {
-						non++;
-					}
-				}
-				if(non==listPhases.size()) {
-					listPhases.add(listActivities.get(i).getPhase().getCode_phase());
-				}
-			}		
-		}
-		return listPhases;
+		return modeleactiviteservice.getPhases(id_modele);
 	}
+	
 }

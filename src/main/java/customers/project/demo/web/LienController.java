@@ -3,6 +3,9 @@ package customers.project.demo.web;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +50,19 @@ public class LienController {
 	}
 	@GetMapping("/menuHorizontal/getLiens")
 	public List<Lien> getAll() {
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			Date date1=sdf.parse("09/07/1997");
+			Date date2=sdf.parse("29/05/2020");
+			long diff=date2.getYear()-date1.getYear();
+			System.out.println(diff);
+					} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return Lienservice.getLiensHorizonatl();
+		
 	}
 	@PutMapping("/menuHorizontal/updateLien")
 	public void updateLien(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {

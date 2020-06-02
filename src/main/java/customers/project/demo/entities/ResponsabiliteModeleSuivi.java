@@ -1,6 +1,5 @@
 package customers.project.demo.entities;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -9,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 @Entity
-public class ResponsabiliteModele implements Serializable{
+public class ResponsabiliteModeleSuivi implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
@@ -19,18 +18,18 @@ public class ResponsabiliteModele implements Serializable{
 	public void setPayrollmanager(Utilisateur payrollmanager) {
 		this.payrollmanager = payrollmanager;
 	}
-	public Modele getModele() {
-		return modele;
+	public ModeleSuivi getModeleSuivi() {
+		return modelesuivi;
 	}
-	public void setModele(Modele modele) {
-		this.modele = modele;
+	public void setModeleSuivi(ModeleSuivi ModeleSuivi) {
+		this.modelesuivi = ModeleSuivi;
 	}
 	private Date date_debut;
 	private Date date_fin;
 	@ManyToOne
 	private Utilisateur payrollmanager;
 	@ManyToOne
-	private Modele modele;
+	private ModeleSuivi modelesuivi;
 	public Date getDate_debut() {
 		return date_debut;
 	}
@@ -40,6 +39,7 @@ public class ResponsabiliteModele implements Serializable{
 	public Date getDate_fin() {
 		return date_fin;
 	}
+	
 	public void setDate_fin(Date date_fin) {
 		this.date_fin = date_fin;
 	}
