@@ -20,8 +20,6 @@ import customers.project.demo.entities.Suivi;
 public class SuiviService {
 @Autowired
 SuiviRepository suivirepository;
-@Autowired
-ActiviteRepository activiterepository;
 public void savesuivi(Suivi suivi) {
 	suivirepository.save(suivi);
 }

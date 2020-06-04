@@ -37,9 +37,10 @@ public class DocumentationController {
 	DocumentationService documentationservice;
 	@PostMapping("/saveDocument")
 	public void save(@RequestParam("file") MultipartFile file,@RequestParam("document") String doc) {
-		
 		try {
+			//Récuperer l'objet documentation
 			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
+			//Choisir le bon chemin selon le type du document
 			if(documentation.getType().equals("CGI")) {
 				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/CGI";
 			}else if(documentation.getType().equals("Code de travail")) {
@@ -49,12 +50,14 @@ public class DocumentationController {
 			}else if(documentation.getType().equals("Paramétrage de la paie")) {
 				uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads/documents/PP";
 			}
+			//Enregistrer le document dans le chemin
 			StringBuilder fileNames = new StringBuilder();
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			  fileNames.append(file.getOriginalFilename()+" ");
 			  Files.write(fileNameAndPath, file.getBytes());
-			
+			//Enregistrer le nom du document
 			documentation.setFile(file.getOriginalFilename());
+			//Ajouter le document dans la base de donnée 
 			documentationservice.addDocument(documentation);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

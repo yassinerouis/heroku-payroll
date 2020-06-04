@@ -26,7 +26,6 @@ public class PhaseController {
 	public void savePhase(@RequestBody Phase phase) {
 		phaseservice.addPhase(phase);
 	}
-	
 	@GetMapping("/getphases")
 	public List<Phase> getAll() {
 		return phaseservice.getPhases();
@@ -35,12 +34,10 @@ public class PhaseController {
 	public Set<Activite> getActivities(@RequestBody long phase) {
 		return phaseservice.getActivites(phase);
 	}
-	
 	@PutMapping("/updatePhase")
 	public void updateModele(@RequestBody Phase phase) {
 		phaseservice.updatePhase(phase);
 	}
-	
 	@DeleteMapping("/deletePhase/{id}")
 	public void delete(@PathVariable("id") long id) {
 		phaseservice.deletePhase(id);

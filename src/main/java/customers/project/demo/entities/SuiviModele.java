@@ -26,5 +26,34 @@ public class SuiviModele {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	String date_cible;
+	
+	public String getDate_cible() {
+		return date_cible;
+	}
+	public void setDate_cible(String date_cible) {
+		this.date_cible = date_cible;
+	}
+	private boolean clotured;
+	
+	public boolean isClotured() {
+		return clotured;
+	}
+	public void setClotured(boolean clotured) {
+		this.clotured = clotured;
+	}
+	long code_modele;
+	public List<InfosActivite> getActivitesinfos() {
+		return activitesinfos;
+	}
+	public void setActivitesinfos(List<InfosActivite> activitesinfos) {
+		this.activitesinfos = activitesinfos;
+	}
+	public long getCode_modele() {
+		return code_modele;
+	}
+	public void setCode_modele(long code_modele) {
+		this.code_modele = code_modele;
+	}
 
 }

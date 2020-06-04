@@ -1,6 +1,7 @@
 package customers.project.demo.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,14 @@ private int id;
 	private ActiviteSuivi activite;
 	@ManyToOne
 	private Utilisateur utilisateur;
-	
+	String date_commentaire;
+
+public String getDate_commentaire() {
+		return date_commentaire;
+	}
+	public void setDate_commentaire(String date_commentaire) {
+		this.date_commentaire = date_commentaire;
+	}
 public ActiviteSuivi getActivite() {
 		return activite;
 	}

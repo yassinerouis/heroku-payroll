@@ -110,12 +110,12 @@ public void sendEmail(InfosActivite activite) {
         Date date=new Date();
         int h=date.getHours();
         if(statut==0) {
-        	message.setText("Bonsoir "+activite.getResponsable()+", "+"\n"+" "+contenu+"."+"\n"+" Cordialement,");
+        	message.setText("Bonsoir "+activite.getResponsable()+", "+"\n"+contenu+"."+"\n"+"Cordialement,");
         }
         if(h>17 && statut!=0) {
-        	message.setText("Bonsoir "+activite.getResponsable()+", "+"\n"+" "+contenu+"."+"\n"+"La date d'echeance:"+activite.getDate_echeance()+"."+"\n"+" Cordialement,");
+        	message.setText("Bonsoir "+activite.getResponsable()+", "+"\n"+contenu+"."+"\n"+"La date d'echeance:"+activite.getDate_echeance()+"."+"\n"+"Cordialement,");
         }else if(h<17 && statut!=0) {
-        	message.setText("Bonjour "+activite.getResponsable()+", "+"\n"+" "+contenu+"."+"\n"+"La date d'echeance:"+activite.getDate_echeance()+"."+"\n"+" Cordialement,");
+        	message.setText("Bonjour "+activite.getResponsable()+", "+"\n"+contenu+"."+"\n"+"La date d'echeance:"+activite.getDate_echeance()+"."+"\n"+"Cordialement,");
         }
         // Send Message!
         this.emailSender.send(message);

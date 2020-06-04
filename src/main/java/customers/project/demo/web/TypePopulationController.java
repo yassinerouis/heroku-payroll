@@ -33,7 +33,6 @@ public class TypePopulationController {
 	public void updateModele(@RequestBody TypePopulation typepopulation) {
 		typepopulationservice.updateTypePopulation(typepopulation);
 	}
-	
 	@DeleteMapping("/deletetypepopulation/{id}")
 	public void delete(@PathVariable("id") int id) {
 		typepopulationservice.deleteTypePopulation(id);

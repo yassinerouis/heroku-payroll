@@ -1,5 +1,6 @@
 package customers.project.demo.entities;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -44,7 +45,15 @@ public class ModeleSuivi implements Serializable{
 	}
 	public void setModeleSuivi(Modele modele) {
 		Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), modele.getDate_cible());
+		SimpleDateFormat formater = null;
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), modele.getDate_cible());
+	    Date date=calendar.getTime();
+	    formater = new SimpleDateFormat("EEEE");
+	    if(formater.format(date).equals("samedi")) {
+	    	calendar.add(Calendar.DATE, -1);
+	    }else if(formater.format(date).equals("dimanche")) {
+	    	calendar.add(Calendar.DATE,1);
+	    }
 		this.setcible(calendar.getTime());
 		this.setLibelle(modele.getLibelle());
 		this.setReglementation(modele.getReglementation());

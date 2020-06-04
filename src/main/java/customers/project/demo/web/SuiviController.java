@@ -74,71 +74,61 @@ public class SuiviController {
 	}
 	@PostMapping("/savesuivi/{id_population}")
 	public void save(@RequestBody List<ModeleActivite> activities,@PathVariable int id_population) {
-		
 		try {
-			//le modèle est vide, il y a que l'id je vais remplir les modèles par ses informations
+			//je récupère le modèle des activités du suivi à créer qui sont envoyées par le front-end
 			activities.get(0).setModele(modeleservice.getModele(activities.get(0).getModele().getCode_modele()));
-			
 			Modele modele=activities.get(0).getModele();
 			ModeleSuivi modelesuivi=new ModeleSuivi();
 			modelesuivi.setModele_principal(modele.getCode_modele());
+			//je crée un modèle suivi (c'est à dire l'image du modèle de ce suivi)
 			Date date=new Date();
 			modelesuivi.setDate_creation(date);
-			//creer un modele suivi
 			modelesuivi.setModeleSuivi(modele);
-			System.out.println("modele");
-			System.out.println(modele.getCode_modele());
+			//Enregistrer une image des phases de ses activités, pour ce modèle suivi enregistré
 			List<Phase> phasesModele=modeleactiviteservice.getObjectPhases(modele.getCode_modele());
 			modelesuiviservice.addModeleSuivi(modelesuivi);
-			Date cible=modelesuivi.getcible();
-			//creer les phases suivi
 			List<PhaseSuivi> phasesSuivi=new ArrayList<PhaseSuivi>();
-			
 			for(int i=0;i<phasesModele.size();i++) {
-				System.out.println(phasesModele.get(i).getLibelle());
 				PhaseSuivi phasesuivi=new PhaseSuivi();
 				phasesuivi.setPhaseModele(phasesModele.get(i));
 				phasesuivi.setModele(modelesuivi);
 				phasesuiviservice.addPhaseSuivi(phasesuivi);
-				//System.out.println(phasesuivi.getCode_phase());
 				phasesSuivi.add(phasesuivi);
 			}
-			
-			
+			//Enregistrer une image des activités choisit pour chaque phase du modèle en suivi
+			Date cible=modelesuivi.getcible();
 			for(int i=0;i<phasesModele.size();i++) {
-				System.out.println(phasesSuivi.get(i).getCode_phase());
 				phasesSuivi.get(i).setPhaseModele(phasesModele.get(i));
-				System.out.println("1-"+phasesModele.get(i).getLibelle());
 				for(int j=0;j<activities.size();j++) {
 					Phase phase=phaseservice.getPhase(activities.get(j).getPhase().getCode_phase());
 					if(phase.getLibelle().equals(phasesModele.get(i).getLibelle())) {
+						//REMPLIR LES CHAMPS DE L'ACTIVITE EN SUIVI
 						Activite activite=activiteservice.getActivite(activities.get(j).getActivite().getCode_activite());
 						activities.get(j).getActivite().setActivite(activite);
 						ActiviteSuivi activitesuivi=new ActiviteSuivi();
 						activitesuivi.setActivite_principale(activite.getCode_activite());
+						//CALCULER LA DATE D'ECHEANCE
 						Calendar calendar = Calendar.getInstance();
 				        calendar.setTime(cible);
 				        calendar.add(Calendar.DATE, activities.get(j).getEcheance());
 				        activitesuivi.setEcheance(calendar.getTime());
-						activitesuivi.setActiviteModele(activities.get(j));
+						activitesuivi.setActiviteModele(activities.get(j));		
+						activitesuivi.setEspacetravail(activite.getEspacetravail());
+						activitesuivi.setPhasesuivi(phasesSuivi.get(i));
+						activitesuivi.setStatut("En attente");
+						activitesuivi.setResponsable(activities.get(j).getResponsable());
+						//SI L'ACTIVITE N'EXISTE PAS DANS LE MODELE (MAIS IL EXISTE DANS LA PHASE)
 						if(activities.get(j).getActivite().getLibelle()==null) {
 							activitesuivi.setActiviteX(activite);
 						}
-						System.out.println(activitesuivi.getLibelle());
-						
-						activitesuivi.setEspacetravail(activite.getEspacetravail());
-						activitesuivi.setPhasesuivi(phasesSuivi.get(i));
-						
-						activitesuivi.setStatut("On hold");
-						activitesuivi.setResponsable(activities.get(j).getResponsable());
-						System.out.println("2-"+activitesuivi.getLibelle());
 						activitesuiviservice.addactiviteSuivi(activitesuivi);
 					}
 				}
 			}
+			//Créer le suivi
 			Suivi suivi=new Suivi();
 			Calendar calendar=Calendar.getInstance();
-			System.out.println(calendar.getTime());
+			
 			suivi.setYear(calendar.get(Calendar.YEAR));
 			suivi.setMonth(calendar.get(Calendar.MONTH)+1);
 			suivi.setModele(modelesuivi);
@@ -148,15 +138,16 @@ public class SuiviController {
 			System.out.println(e.getMessage());
 		}
 	}
-	@GetMapping("get/{id}")
-	public ModeleSuivi getid(@PathVariable long id) {
-		return modelesuiviservice.getModeleSuivi(id);
-	}
+	
 	public List<SuiviModele> selectSuivi(ModeleSuivi modelesuivi){
 		List<SuiviModele> listActivities=new ArrayList<SuiviModele>();
 		List<PhaseSuivi> phases=new ArrayList<PhaseSuivi>();
 		List<ActiviteSuivi> activities=new ArrayList<ActiviteSuivi>();
 		phases=phasesuiviservice.getPhases(modelesuivi.getCode_modele());
+		int k1=0;
+		int k2=0;
+		SimpleDateFormat formater = null;
+		Date cible=null;
 		for(int i=0;i<phases.size();i++) {
 			System.out.println(phases.get(i).getCode_phase());
 			List<InfosActivite> listinfos=new ArrayList<InfosActivite>();
@@ -166,8 +157,9 @@ public class SuiviController {
 			for(int j=0;j<activities.size();j++) {
 				InfosActivite infos=new InfosActivite();
 		        infos.setResponsable(activities.get(j).getResponsable().getNom()+" "+activities.get(j).getResponsable().getPrenom());
-		        infos.setImage_responsable((activities.get(j).getResponsable().getNom()+activities.get(j).getResponsable().getPrenom()).replaceAll("\\s", "")+".jpg");
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+		        String image="http://localhost:8089/uploads/utilisateurs/"+((activities.get(j).getResponsable().getPrenom()+activities.get(j).getResponsable().getNom()).toLowerCase()).replaceAll(" ", "")+".jpg";
+		        infos.setImage_responsable(image);
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
 		        Calendar calendar1 = Calendar.getInstance();
 				Date firstDate;
 				try {
@@ -177,7 +169,7 @@ public class SuiviController {
 					Date secondDate = sdf.parse(sdf.format(calendar.getTime()));
 					long diffInMillies =  firstDate.getTime()-secondDate.getTime();
 					long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-					Locale loc = new Locale("en", "US");
+					Locale loc = new Locale("fr", "FR");
 					DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, loc);
 					infos.setDate_echeance(dateFormat.format(activities.get(j).getEcheance()));
 					infos.setEspacetravail(activities.get(j).getEspacetravail().getLibelle());
@@ -185,27 +177,32 @@ public class SuiviController {
 					infos.setId(activities.get(j).getCode_activite());
 					infos.setOrdre(activities.get(j).getOrdre_affichage());
 					infos.setMatricule(activities.get(j).getResponsable().getMatricule());
-					Date cible=activities.get(j).getPhasesuivi().getModele().getcible();
+					cible=activities.get(j).getPhasesuivi().getModele().getcible();
+					formater = new SimpleDateFormat("EEEE d MMM yyyy");
+					
 					long diffMillies = activities.get(j).getEcheance().getTime()-cible.getTime();
 					long echeance = TimeUnit.DAYS.convert(diffMillies, TimeUnit.MILLISECONDS);
 			        infos.setEcheance(echeance);
 					infos.setActivite(modelesuiviservice.getActivite(activities.get(j).getActivite_principale()));
 					infos.setLibelle_statut(activities.get(j).getStatut());
+					
+					k2++;
 					String statut=infos.getLibelle_statut();
-					if((diff<0) && !(infos.getLibelle_statut().equals("In progress"))&&!(infos.getLibelle_statut().equals("Closed"))) {
+					if((diff<0) && ! (infos.getLibelle_statut().equals("En cours"))) {
 						infos.setColor_statut("bg-c-blue");
 						System.out.println(statut);
 					}
-					else if(diff>0) {
+					else if(diff>=0) {
 						infos.setColor_statut("bg-c-pink");
-					}else if(infos.getLibelle_statut().equals("Closed")) {
-						infos.setColor_statut("bg-c-green");
 					}
 					else{
 						infos.setColor_statut("bg-c-yellow");
-						System.out.println("2");
 
 					}	
+					if(infos.getLibelle_statut().equals("Terminée")) {
+						infos.setColor_statut("bg-c-green");
+						k1++;
+					}
 					listinfos.add(infos);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -214,7 +211,12 @@ public class SuiviController {
 			}
 			suivimodele.setActivitesuivi(listinfos);
 			listActivities.add(suivimodele);
+			listActivities.get(0).setDate_cible(formater.format(cible));
 		}
+		if(k1==k2) {
+			listActivities.get(0).setClotured(true);
+		}
+		listActivities.get(0).setCode_modele(modelesuivi.getCode_modele());
 	return listActivities;
 	}
 	@GetMapping("/getSuivi/{id_modele}")
@@ -224,6 +226,7 @@ public class SuiviController {
 	}
 	@GetMapping("/filterSuivi/{id_modele}/{year}/{month}")
 	public List<SuiviModele> filterSuivi(@PathVariable long id_modele,@PathVariable Integer year,@PathVariable Integer month) {
+		System.out.println("id:"+id_modele+"year:"+year+"month:"+month);
 		List<ModeleSuivi> modelessuivi=modelesuiviservice.selectModeleSuivis(id_modele);
 		ModeleSuivi modelesuivi=new ModeleSuivi();
 		for(int i=0;i<modelessuivi.size();i++) {
