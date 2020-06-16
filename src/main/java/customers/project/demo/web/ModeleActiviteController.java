@@ -72,5 +72,9 @@ public class ModeleActiviteController {
 	public List<Long> getPhases(@PathVariable long id_modele) {
 		return modeleactiviteservice.getPhases(id_modele);
 	}
+	@GetMapping("/getModeles/{id_activite}")
+	public List<Modele> getModeles(@PathVariable long id_activite) {
+		return modeleactiviteservice.getModeles(id_activite);
+	}
 	
 }

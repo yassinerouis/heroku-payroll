@@ -65,6 +65,7 @@ public List<Activite> selectActivites(Long id_phase) {
 public void updateActivite(Activite Activite) {
 	activiterepository.getOne(Activite.getCode_activite()).setActivite(Activite);
 }
+
 public void deleteActivite(long id) {
 	for(int i=0;i<this.getActivites().size();i++) {
 		for(int j=0;j<this.getActivites().get(i).getPrerequis().size();j++) {

@@ -9,7 +9,7 @@ import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.Phase;
 
 public interface ActiviteRepository extends JpaRepository<Activite,Long>{
-	@Query("FROM Activite where phase=?1")
+	@Query("FROM Activite where phase=?1 and status.libelle='actif'")
 	public List<Activite> selectPhases(Phase phase);
-	
+
 }

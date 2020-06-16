@@ -26,4 +26,11 @@ public void savesuivi(Suivi suivi) {
 public List<ModeleSuivi> getsuivi() {
 	return suivirepository.selectModele();
 }
+public void updatesuivi(Suivi suivi) {
+	System.out.println(suivi.getModele().getCode_modele());
+	suivirepository.updateSuivi(true, suivi.getModele().getCode_modele());
+}
+public Suivi selectSuivi(long modele) {
+	return suivirepository.selectSuivi(modele);
+}
 }

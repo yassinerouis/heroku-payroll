@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import customers.project.demo.dao.ActiviteRepository;
 import customers.project.demo.dao.ModeleActiviteRepository;
 import customers.project.demo.dao.ModeleRepository;
 import customers.project.demo.entities.Activite;
@@ -22,11 +23,23 @@ public class ModeleActiviteService {
 	ModeleActiviteRepository modeleactiviterepository;
 	@Autowired
 	ModeleRepository modelerepository;
+	@Autowired
+	ActiviteRepository activiterepository;
 	public void saveModeleActivite(ModeleActivite modeleactivite){
 		modeleactiviterepository.save(modeleactivite);
 	}
 	public void updateModeleActivite(ModeleActivite modeleactivite){
 		modeleactiviterepository.getOne(modeleactivite.getId());
+	}
+	public List<Modele> getModeles(long id){
+		List<ModeleActivite> modelesactivite= modeleactiviterepository.selectModelesActivitie();
+		List<Modele> modeles=new ArrayList<Modele>();
+		for(int i=0;i<modelesactivite.size();i++) {
+			if(modelesactivite.get(i).getActivite().getCode_activite()==id) {
+				modeles.add(modelesactivite.get(i).getModele());
+			}
+		}
+		return modeles;
 	}
 	public List<ModeleActivite> selectModeleActivities(Modele modele){
 		return modeleactiviterepository.selectActivities(modele.getCode_modele());

@@ -50,7 +50,6 @@ public ActiviteSuivi addFirstactiviteSuivi(ActiviteSuivi activiteSuivi,int id_st
 	PhaseSuivi phase=phasesuivirepository.getOne(id_phase);
 	EspaceTravail espacetravail=espacetravailrepository.getOne(id_espacetravail);
 		Status status=statusrepository.getOne(id_status);
-		Date date= new Date();
 		activiteSuivi.setPhase(phase);
 		activiteSuivi.setStatus(status);
 		ActiviteSuivi act=activiteSuivirepository.save(activiteSuivi);

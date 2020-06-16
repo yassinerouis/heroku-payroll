@@ -117,9 +117,7 @@ public class ModeleService {
 		modelerepository.deleteById(id);
 	}
 	
-	public int compter() {
-		return modelerepository.coundAllModeles();
-	}
+	
 	
 	public Set<Population> getPopulations(long Modele) {
 		TypePopulation population=modelerepository.getOne(Modele).getTypepopulation();

@@ -52,6 +52,7 @@ public class DocumentationController {
 			}
 			//Enregistrer le document dans le chemin
 			StringBuilder fileNames = new StringBuilder();
+			
 			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 			  fileNames.append(file.getOriginalFilename()+" ");
 			  Files.write(fileNameAndPath, file.getBytes());
@@ -70,9 +71,11 @@ public void updateDocument(@RequestParam("file") MultipartFile file,@RequestPara
 		try {
 			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
 			StringBuilder fileNames = new StringBuilder();
-			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
-			  fileNames.append(file.getOriginalFilename()+" ");
-			  Files.write(fileNameAndPath, file.getBytes());
+			if(file!=null) {
+				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
+				fileNames.append(file.getOriginalFilename()+" ");
+				Files.write(fileNameAndPath, file.getBytes());
+			}
 			documentationservice.updateDocumentation(documentation);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

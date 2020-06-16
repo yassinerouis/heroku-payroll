@@ -20,14 +20,14 @@ public class Suivi implements Serializable{
 	private long code;
 	private int year;
 	private int month;
-	private boolean is_clotured;
-	public boolean isIs_clotured() {
-		return is_clotured;
+	private boolean clotured;
+	public boolean isClotured() {
+		return clotured;
 	}
-	public void setIs_clotured(boolean is_clotured) {
-		this.is_clotured = is_clotured;
+	public void setClotured(boolean clotured) {
+		this.clotured = clotured;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private ModeleSuivi modele;
 	@ManyToOne
 	private Population population;

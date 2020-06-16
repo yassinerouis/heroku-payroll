@@ -21,14 +21,12 @@ import customers.project.demo.services.ResponsabiliteModeleService;
 @CrossOrigin
 
 public class ModeleController {
-	
 		@Autowired
 		ModeleService modeleservice;
 		@Autowired
 		ResponsabiliteModeleService responsabilitemodeleservice;
 
 		@PostMapping("/savemodele/{type}/{responsable}")
-		
 		public Modele save(@RequestBody Modele modele,@PathVariable int type,@PathVariable String responsable) {
 			Modele m=modeleservice.addModele(modele,type);			
 			responsabilitemodeleservice.addResponsabilite(responsable, modele);
@@ -51,7 +49,6 @@ public class ModeleController {
 			responsabilitemodeleservice.updateResponsabilite(modele, responsable);
 			return m;
 		}
-		
 		
 		@DeleteMapping("/deleteModele/{id}")
 		public void delete(@PathVariable("id") long id) {

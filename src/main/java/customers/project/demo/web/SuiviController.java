@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,9 +69,13 @@ public class SuiviController {
 		System.out.println(modele);
 		 return modeleservice.getPopulations(modele);
 	}
-	@GetMapping("/getsuivis")
-	public void getSuivis() {
-		
+	@GetMapping("/selectSuivi/{modele}")
+	public Suivi getSuivis(@PathVariable long modele) {
+		return suiviservice.selectSuivi(modele);
+	}
+	@PutMapping("/updateSuivi")
+	public void updateSuivi(@RequestBody Suivi suivi) {
+		 suiviservice.updatesuivi(suivi);
 	}
 	@PostMapping("/savesuivi/{id_population}")
 	public void save(@RequestBody List<ModeleActivite> activities,@PathVariable int id_population) {
@@ -133,7 +138,9 @@ public class SuiviController {
 			suivi.setMonth(calendar.get(Calendar.MONTH)+1);
 			suivi.setModele(modelesuivi);
 			suivi.setPopulation(populationservice.getPopulation(id_population));
+			suivi.setClotured(false);
 			suiviservice.savesuivi(suivi);
+			System.out.println(suivi.getCode());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -184,8 +191,9 @@ public class SuiviController {
 					long echeance = TimeUnit.DAYS.convert(diffMillies, TimeUnit.MILLISECONDS);
 			        infos.setEcheance(echeance);
 					infos.setActivite(modelesuiviservice.getActivite(activities.get(j).getActivite_principale()));
+					System.out.println(activities.get(j).getCode_activite());
+					System.out.println(activities.get(j).getStatut());
 					infos.setLibelle_statut(activities.get(j).getStatut());
-					
 					k2++;
 					String statut=infos.getLibelle_statut();
 					if((diff<0) && ! (infos.getLibelle_statut().equals("En cours"))) {
@@ -213,8 +221,12 @@ public class SuiviController {
 			listActivities.add(suivimodele);
 			listActivities.get(0).setDate_cible(formater.format(cible));
 		}
+		System.out.println("k1="+k1+" -k2="+k2);
 		if(k1==k2) {
 			listActivities.get(0).setClotured(true);
+			Suivi suivi=new Suivi();
+			suivi.setModele(modelesuivi);
+			suiviservice.updatesuivi(suivi);
 		}
 		listActivities.get(0).setCode_modele(modelesuivi.getCode_modele());
 	return listActivities;
@@ -239,6 +251,7 @@ public class SuiviController {
 			if((year1.equals(year))&&(month1.equals(month))) {
 				modelesuivi=modelessuivi.get(i);
 			}
+			System.out.println("filter"+modelesuivi.getCode_modele());
 		}
 		return this.selectSuivi(modelesuivi);
 	}

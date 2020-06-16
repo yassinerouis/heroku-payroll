@@ -1,15 +1,12 @@
 package customers.project.demo.dao;
 
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import customers.project.demo.entities.Modele;
 import customers.project.demo.entities.Periode;
-import customers.project.demo.entities.Phase;
 
-public interface ModeleRepository extends JpaRepository<Modele,Long>{
-	
+public interface PeriodeRepository extends JpaRepository<Periode,Long> {
+	@Query("FROM Periode where annee=?1 and mois=?2")
+	public Periode getPeriode(int annee,int mois);
 }
