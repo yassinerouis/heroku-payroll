@@ -58,24 +58,10 @@ public class Utilisateur  implements Serializable{
 	private String nom;
 	private String prenom;
 	private String societe;
-	
-	public Compte getCompte() {
-		return compte;
-	}
-	public void setCompte(Compte compte) {
-		this.compte = compte;
-	}
-	public Set<Commentaire> getCommentaire() {
-		return commentaire;
-	}
-	public void setCommentaire(Set<Commentaire> commentaire) {
-		this.commentaire = commentaire;
-	}
 	private String etablissement;
 	private String emploi;
 	private String statut;
-	@OneToOne
-	private Compte compte;
+
 	public String getSociete() {
 		return societe;
 	}
@@ -121,6 +107,5 @@ public class Utilisateur  implements Serializable{
 	@OneToMany(mappedBy = "payrollmanager")
 	@JsonIgnore
 	private Set<ResponsabiliteModele> respomodele=new HashSet<ResponsabiliteModele>();
-	@OneToMany(mappedBy="utilisateur")
-	private Set<Commentaire> commentaire=new HashSet<Commentaire>();
+	
 }

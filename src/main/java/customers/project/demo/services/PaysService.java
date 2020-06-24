@@ -34,6 +34,9 @@ StatusRepository statusrepository;
 public List<Pays> getPays() {
 	return paysrepository.findAll();
 }
+public Pays getOnePays(int id) {
+	return paysrepository.getOne(id);
+}
 public void updatePays(Pays pays) {
 	paysrepository.getOne(pays.getCode()).setLibelle(pays.getLibelle());
 	paysrepository.getOne(pays.getCode()).setReglementation(pays.getReglementation());

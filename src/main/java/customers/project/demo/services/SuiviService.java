@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import customers.project.demo.dao.ActiviteRepository;
+import customers.project.demo.dao.ModeleSuiviRepository;
 import customers.project.demo.dao.SuiviRepository;
 import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.ModeleSuivi;
@@ -20,11 +21,19 @@ import customers.project.demo.entities.Suivi;
 public class SuiviService {
 @Autowired
 SuiviRepository suivirepository;
+@Autowired
+ModeleSuiviRepository modelesuivirepository;
 public void savesuivi(Suivi suivi) {
 	suivirepository.save(suivi);
 }
 public List<ModeleSuivi> getsuivi() {
 	return suivirepository.selectModele();
+}
+public void updateDateCible(ModeleSuivi modelesuivi) {
+	 modelesuivirepository.getOne(modelesuivi.getCode_modele()).setcible(modelesuivi.getcible());
+}
+public ModeleSuivi getModeleSuivi(long modelesuivi) {
+	return modelesuivirepository.getOne(modelesuivi);
 }
 public void updatesuivi(Suivi suivi) {
 	System.out.println(suivi.getModele().getCode_modele());

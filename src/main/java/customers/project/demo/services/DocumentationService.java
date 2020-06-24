@@ -24,6 +24,9 @@ DocumentationRepository documentationrepository;
 	public List<Documentation> getDocuments(){
 		return documentationrepository.findAll();
 	}
+	public Documentation getDocument(int id){
+		return documentationrepository.getOne(id);
+	}
 	public void updateDocumentation(Documentation documentation) {
 		documentationrepository.getOne(documentation.getIdentifiant()).
 		setTitre(documentation.getTitre());

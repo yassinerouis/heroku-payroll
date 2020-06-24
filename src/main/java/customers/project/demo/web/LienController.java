@@ -65,14 +65,20 @@ public class LienController {
 		
 	}
 	@PutMapping("/menuHorizontal/updateLien")
-	public void updateLien(@RequestParam("logo") MultipartFile file,@RequestParam("lien") String lien_menu) {
+	public void updateLien(@RequestParam(required=false) MultipartFile file,@RequestParam("lien") String lien_menu) {
 		try {
 			Lien lien = new ObjectMapper().readValue(lien_menu,Lien.class);
-			System.out.println(lien.getId());
-			StringBuilder fileNames = new StringBuilder();
-			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
-			fileNames.append(file.getOriginalFilename()+" ");
-			Files.write(fileNameAndPath, file.getBytes());
+
+			if(file==null) {
+				System.out.println("hi");
+				int id=lien.getId();
+				lien.setLogo(Lienservice.getLien(id).getLogo());
+			}else {
+				StringBuilder fileNames = new StringBuilder();
+				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
+				fileNames.append(file.getOriginalFilename()+" ");
+				Files.write(fileNameAndPath, file.getBytes());
+			}
 			lien.setMenu("H");
 			Lienservice.updateLien(lien);
 			} catch (Exception e) {

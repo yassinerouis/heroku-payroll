@@ -66,7 +66,6 @@ public class SuiviController {
 	PopulationService populationservice;
 	@GetMapping("/getpopulations/{modele}")
 	public Set<Population> getPopulations(@PathVariable long modele) {
-		System.out.println(modele);
 		 return modeleservice.getPopulations(modele);
 	}
 	@GetMapping("/selectSuivi/{modele}")
@@ -140,7 +139,6 @@ public class SuiviController {
 			suivi.setPopulation(populationservice.getPopulation(id_population));
 			suivi.setClotured(false);
 			suiviservice.savesuivi(suivi);
-			System.out.println(suivi.getCode());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -156,7 +154,6 @@ public class SuiviController {
 		SimpleDateFormat formater = null;
 		Date cible=null;
 		for(int i=0;i<phases.size();i++) {
-			System.out.println(phases.get(i).getCode_phase());
 			List<InfosActivite> listinfos=new ArrayList<InfosActivite>();
 			activities=activitesuiviservice.getActivities(phases.get(i).getCode_phase());
 			SuiviModele suivimodele=new SuiviModele();
@@ -191,14 +188,12 @@ public class SuiviController {
 					long echeance = TimeUnit.DAYS.convert(diffMillies, TimeUnit.MILLISECONDS);
 			        infos.setEcheance(echeance);
 					infos.setActivite(modelesuiviservice.getActivite(activities.get(j).getActivite_principale()));
-					System.out.println(activities.get(j).getCode_activite());
-					System.out.println(activities.get(j).getStatut());
+					
 					infos.setLibelle_statut(activities.get(j).getStatut());
 					k2++;
 					String statut=infos.getLibelle_statut();
 					if((diff<0) && ! (infos.getLibelle_statut().equals("En cours"))) {
 						infos.setColor_statut("bg-c-blue");
-						System.out.println(statut);
 					}
 					else if(diff>=0) {
 						infos.setColor_statut("bg-c-pink");
@@ -221,7 +216,6 @@ public class SuiviController {
 			listActivities.add(suivimodele);
 			listActivities.get(0).setDate_cible(formater.format(cible));
 		}
-		System.out.println("k1="+k1+" -k2="+k2);
 		if(k1==k2) {
 			listActivities.get(0).setClotured(true);
 			Suivi suivi=new Suivi();
@@ -246,14 +240,33 @@ public class SuiviController {
 			calendar.setTime(modelessuivi.get(i).getDate_creation());
 			Integer year1=calendar.get(Calendar.YEAR);
 			Integer month1=calendar.get(Calendar.MONTH)+1;
-			System.out.println(year +""+month);
-			System.out.println(year1+""+month1);
 			if((year1.equals(year))&&(month1.equals(month))) {
 				modelesuivi=modelessuivi.get(i);
 			}
-			System.out.println("filter"+modelesuivi.getCode_modele());
 		}
 		return this.selectSuivi(modelesuivi);
 	}
-	
+	@PutMapping("/updatedatecible")
+	public void updateDateCible(@RequestBody ModeleSuivi modelesuivi) {
+		long diffInMillies =  suiviservice.getModeleSuivi(modelesuivi.getCode_modele()).getcible().getTime()-modelesuivi.getcible().getTime();
+		int diff =(int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		System.out.println("diffrence:"+diff);
+		suiviservice.updateDateCible(modelesuivi);
+		List<PhaseSuivi> listPhasesSuivi=phasesuiviservice.getPhases(modelesuivi.getCode_modele());
+		for(int i=0;i<listPhasesSuivi.size();i++) {
+			List<ActiviteSuivi> listActivivtesSuivi=activitesuiviservice.getActivities(listPhasesSuivi.get(i).getCode_phase());
+			for(int j=0;j<listActivivtesSuivi.size();j++){
+				Calendar calendar = Calendar.getInstance();
+		        calendar.setTime(listActivivtesSuivi.get(j).getEcheance());
+		        calendar.add(Calendar.DATE, diff);
+				listActivivtesSuivi.get(j).setEcheance(calendar.getTime());
+			}
+		}
+	}
+	@GetMapping("/getModeleSuivi/{id}")
+	public ModeleSuivi getModeleSuivi(@PathVariable long id) {
+		
+		return suiviservice.getModeleSuivi(id);
+		
+	}
 }

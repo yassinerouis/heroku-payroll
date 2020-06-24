@@ -1,11 +1,8 @@
 package customers.project.demo.services;
 
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.transaction.Transactional;
 
@@ -25,11 +22,19 @@ public class CommentaireService {
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");  
 		String formattedDate = myDateObj.format(myFormatObj);  
 		commentaire.setDate_commentaire(formattedDate);
+		commentaire.setFichiers(null);
 		return commentairerepository.save(commentaire);
 	}
-	public List<Commentaire> getCommentaire() {
-		return commentairerepository.findAll();
+	public List<Commentaire> getCommentaire(long id_activite) {
+		for(int i=0;i<commentairerepository.getComments(id_activite).size();i++) {
+			System.out.println(commentairerepository.getComments(id_activite).get(i).getContenu());
+		}
+		return commentairerepository.getComments(id_activite);
 	}
-	
-	
+	public void setComment(long id,List<String> fichiers) {
+		 commentairerepository.getOne(id).setFichiers(fichiers);
+	}
+	public void deleteComment(long id) {
+		commentairerepository.deleteById(id);
+	}
 }

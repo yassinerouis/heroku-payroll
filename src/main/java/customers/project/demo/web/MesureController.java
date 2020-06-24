@@ -34,6 +34,7 @@ public class MesureController {
 	PeriodeService periodeservice;
 	@GetMapping("/filterDashboard/{modele}/{annee}/{mois}/{id_devise}")
 	public Dashboard filter(@PathVariable long modele,@PathVariable int annee,@PathVariable int mois,@PathVariable int id_devise) {
+		System.out.println("modele"+modele);
 		Periode periode=periodeservice.getPeride(annee, mois);
 		Devise devise=deviseservice.getDevise(id_devise);		
 		return mesureservice.filterDashboard(devise,modeleservice.getModele(modele), periode);

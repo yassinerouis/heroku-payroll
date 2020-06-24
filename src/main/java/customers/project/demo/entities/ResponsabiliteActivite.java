@@ -18,7 +18,7 @@ public class ResponsabiliteActivite implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Utilisateur payroll;
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Activite activite;
+	private ActiviteSuivi activite;
 	public Date getDate_debut() {
 		return date_debut;
 	}
@@ -34,13 +34,14 @@ public class ResponsabiliteActivite implements Serializable{
 	public Utilisateur getPayroll() {
 		return payroll;
 	}
+	
 	public void setPayroll(Utilisateur payroll) {
 		this.payroll = payroll;
 	}
-	public Activite getActivite() {
+	public ActiviteSuivi getActivite() {
 		return activite;
 	}
-	public void setActivite(Activite activite) {
+	public void setActivite(ActiviteSuivi activite) {
 		this.activite = activite;
 	}
 }

@@ -25,4 +25,8 @@ public float deviseToDevise(int id_devise_base,int id_devise_final) {
 	float montant=devise_base.getValeur_euro()/devise_final.getValeur_euro();
 	return montant;
 }
+public Devise getDevisePays(int pays) {
+System.out.println(pays+"+"+deviserepository.getDevise(pays).getSymbol());
+	return deviserepository.getDevise(pays);
+}
 }

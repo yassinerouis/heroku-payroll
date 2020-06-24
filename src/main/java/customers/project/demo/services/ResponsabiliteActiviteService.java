@@ -12,6 +12,7 @@ import customers.project.demo.dao.ResponsabiliteActiviteRepository;
 import customers.project.demo.dao.ResponsabiliteActiviteRepository;
 import customers.project.demo.dao.UtilisateurRepository;
 import customers.project.demo.entities.Activite;
+import customers.project.demo.entities.ActiviteSuivi;
 import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.ResponsabiliteActivite;
 import customers.project.demo.entities.ResponsabiliteActivite;
@@ -26,7 +27,7 @@ private ResponsabiliteActiviteRepository responsabiliteactiviterepository;
 @Autowired
 private UtilisateurRepository userrepository;
 
-public void addResponsabilite(String responsable,Activite activite) {
+public void addResponsabilite(String responsable,ActiviteSuivi activite) {
 	ResponsabiliteActivite responsabiliteActivite=new ResponsabiliteActivite();
 	Date date_debut= new Date();
 		Utilisateur utilisateur=userrepository.getOne(responsable);
@@ -41,7 +42,7 @@ public List<ResponsabiliteActivite> getResponsables(long Activite) {
 }
 
 
-public void updateResponsabilite(Activite Activite,String responsable) {
+public void updateResponsabilite(ActiviteSuivi Activite,String responsable) {
 	List<ResponsabiliteActivite> respos=responsabiliteactiviterepository.selectResponsabilites(Activite.getCode_activite());
 int trouve=0;
 	for(int  i=0;i<respos.size();i++) {
@@ -50,6 +51,7 @@ int trouve=0;
 	if(respos.get(i).getPayroll().getMatricule()==responsable) {
 		trouve=1;
 	}
+	
 	if(trouve==1) {
 		ResponsabiliteActivite responsabiliteActivite=new ResponsabiliteActivite();
 		Date date= new Date();

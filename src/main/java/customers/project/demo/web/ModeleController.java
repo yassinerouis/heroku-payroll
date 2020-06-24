@@ -37,6 +37,10 @@ public class ModeleController {
 		public List<Modele> getAll() {
 			return modeleservice.getModeles();
 		}
+		@GetMapping("/getmodeles/{reglementation}")
+		public List<Modele> getModeles(@PathVariable String reglementation) {
+			return modeleservice.getModeles(reglementation);
+		}
 		@GetMapping("/getresponsablemodele/{id_modele}")
 		public ResponsabiliteModele getResponsable(@PathVariable long id_modele) {
 			return responsabilitemodeleservice.getResponsable(id_modele);

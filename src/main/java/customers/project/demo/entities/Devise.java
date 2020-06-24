@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 @Entity
 public class Devise implements Serializable{
 private static final long serialVersionUID = 1L;
@@ -20,6 +21,14 @@ public int getIdentifiant() {
 public Devise() {
 	super();
 	// TODO Auto-generated constructor stub
+}
+@ManyToOne
+private Pays pays;
+public Pays getPays() {
+	return pays;
+}
+public void setPays(Pays pays) {
+	this.pays = pays;
 }
 public void setIdentifiant(int identifiant) {
 	this.identifiant = identifiant;

@@ -38,7 +38,7 @@ public class ActiviteSuivi implements Serializable{
 		this.setOrdre_affichage(activiteSuivi.ordre_affichage);
 		this.setResponsable(activiteSuivi.responsable);
 		this.setPilotage(activite.isPilotage());
-		this.setPeriodicite(activiteSuivi.getPeriodicite());
+		this.setPeriodicite(activite.getFrequence());
 		this.setEspacetravail(activite.getEspacetravail());
 	}
 	public void setActiviteModele(ModeleActivite activite) {
@@ -63,8 +63,7 @@ public class ActiviteSuivi implements Serializable{
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long code_activite;
-	@OneToMany(mappedBy="activite")
-	private Set<Commentaire> commentaire=new HashSet<Commentaire>();
+	
 	
 		public String getLibelle() {
 			return libelle;
@@ -107,12 +106,7 @@ public class ActiviteSuivi implements Serializable{
 	}
 	@ManyToOne
 	private EspaceTravail espacetravail;
-	public Set<Commentaire> getCommentaire() {
-		return commentaire;
-	}
-	public void setCommentaire(Set<Commentaire> commentaire) {
-		this.commentaire = commentaire;
-	}
+
 	public EspaceTravail getEspacetravail() {
 		return espacetravail;
 	}

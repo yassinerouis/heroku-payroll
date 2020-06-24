@@ -66,12 +66,16 @@ public class DocumentationController {
 		} 
 		}
 	@PutMapping("/updateDocument")
-public void updateDocument(@RequestParam("file") MultipartFile file,@RequestParam("document") String doc) {
-		
+public void updateDocument(@RequestParam(required=false) MultipartFile file,@RequestParam("document") String doc) {
 		try {
 			Documentation documentation = new ObjectMapper().readValue(doc,Documentation.class);
-			StringBuilder fileNames = new StringBuilder();
-			if(file!=null) {
+
+			if(file==null) {
+				int id=new ObjectMapper().readValue(doc,Documentation.class).getIdentifiant();
+				documentation.setFile(documentationservice.getDocument(id).getFile());
+			}
+			else{
+				StringBuilder fileNames = new StringBuilder();
 				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
 				fileNames.append(file.getOriginalFilename()+" ");
 				Files.write(fileNameAndPath, file.getBytes());

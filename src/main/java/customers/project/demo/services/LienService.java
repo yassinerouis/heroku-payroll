@@ -22,6 +22,9 @@ public class LienService {
 	public Lien addLien(Lien Lien) {
 		return Lienrepository.save(Lien);
 	}
+	public Lien getLien(int id) {
+		return Lienrepository.getOne(id);
+	}
 	public List<Lien> getLiensHorizonatl() {
 		return Lienrepository.findAllHorizontal();
 	}

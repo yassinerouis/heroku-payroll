@@ -18,6 +18,7 @@ import customers.project.demo.dao.ActiviteSuiviRepository;
 import customers.project.demo.dao.EspaceTravailRepository;
 import customers.project.demo.dao.PhaseRepository;
 import customers.project.demo.dao.PhaseSuiviRepository;
+import customers.project.demo.dao.ResponsabiliteActiviteRepository;
 import customers.project.demo.dao.StatusRepository;
 import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.ActiviteSuivi;
@@ -25,6 +26,7 @@ import customers.project.demo.entities.EspaceTravail;
 import customers.project.demo.entities.InfosActivite;
 import customers.project.demo.entities.Phase;
 import customers.project.demo.entities.PhaseSuivi;
+import customers.project.demo.entities.ResponsabiliteActivite;
 import customers.project.demo.entities.Status;
 
 @Service
@@ -43,6 +45,8 @@ public class ActiviteSuiviService {
 	EspaceTravailRepository espacetravailrepository;
 	@Autowired
 	PhaseSuiviRepository phasesuivirepository;
+	@Autowired
+	ResponsabiliteActiviteRepository responsabiliteactiviterepository;
 public ActiviteSuivi addactiviteSuivi(ActiviteSuivi activiteSuivi) {
 	return activiteSuivirepository.save(activiteSuivi);
 	}
@@ -74,6 +78,14 @@ public Set<ActiviteSuivi> getPrerequis(long id_activiteSuivi) {
 }*/
 public void updateactiviteSuivi(ActiviteSuivi activiteSuivi,int echeance) {
 	ActiviteSuivi activitesuivi=activiteSuivirepository.getOne(activiteSuivi.getCode_activite());
+	if(!activiteSuivi.getResponsable().getMatricule().equals(activitesuivi.getResponsable().getMatricule())) {
+		ResponsabiliteActivite responsabilite=new ResponsabiliteActivite();
+		responsabilite.setActivite(activitesuivi);
+		responsabilite.setPayroll(activitesuivi.getResponsable());
+		Date date=new Date();
+		responsabilite.setDate_fin(date);
+		responsabiliteactiviterepository.save(responsabilite);
+	}
 	Date date=activitesuivi.getPhasesuivi().getModele().getcible();
 	Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);

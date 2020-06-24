@@ -116,13 +116,13 @@ public class ModeleService {
 		}
 		modelerepository.deleteById(id);
 	}
-	
-	
-	
 	public Set<Population> getPopulations(long Modele) {
 		TypePopulation population=modelerepository.getOne(Modele).getTypepopulation();
 		System.out.println(population.getLibelle());
 		return populationrepository.findPopulations(population.getIdentifiant());
+	}
+	public List<Modele> getModeles(String reglementation) {
+		return modelerepository.findModeles(reglementation);
 	}
 }
 

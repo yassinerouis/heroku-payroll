@@ -46,26 +46,23 @@ public class MesureService {
 	public Dashboard filterDashboard(Devise devise,Modele modele,Periode periode) {
 		Dashboard dashboard=new Dashboard();
 		List<MesureWidget> widgets=new ArrayList<MesureWidget>();
+		System.out.println(modele.getCode_modele()+" "+periode.getIdentifiant());
 		widgets=mesurewidgetrepository.filterDashboarWidget(modele, periode);
-		System.out.println(widgets.size());
 		for(int i=0;i<widgets.size();i++) {
 			if( ! widgets.get(i).getLibelle().equals("TOTAL EMPLOYEES") && ! widgets.get(i).getLibelle().equals("PROCESSED PAYROLL")){
-				System.out.println(widgets.get(i).getLibelle());
 				double valeur=widgets.get(i).getValeur()*this.deviseToDevise(widgets.get(i).getDevise().getIdentifiant(), devise.getIdentifiant());
 				double ancienne_valeur=widgets.get(i).getAncienne_valeur()*this.deviseToDevise(widgets.get(i).getDevise().getIdentifiant(), devise.getIdentifiant());
-				System.out.println(valeur+"-"+ancienne_valeur);
 				widgets.get(i).setAncienne_valeur(ancienne_valeur);
 				widgets.get(i).setValeur(valeur);
 			}
+			System.out.println("w"+widgets.get(i).getValeur());
 		}
 		dashboard.setWidgets(widgets);
-		System.out.println("abbe"+periode.getAnnee());
 		dashboard.setCompositions(mesurecompositionrepository.filterDashboardComposition(modele, periode.getAnnee()));
 		List<MesureGraphe> mg=new ArrayList<MesureGraphe>();
 		mg=mesuregrapherepository.filterDashboardGraphe(modele,periode);
 		List<MesureGraphe> mesureGrapheList=new ArrayList<MesureGraphe>();
 		Calendar calendar=Calendar.getInstance();
-		System.out.println(mg.size());
 				Periode periode1=new Periode();
 				periode1.setAnnee(periode.getAnnee());
 				periode1.setIdentifiant(periode.getIdentifiant());
@@ -81,16 +78,14 @@ public class MesureService {
 						periode1.setAnnee(calendar.get(Calendar.YEAR));
 					}
 					Periode periode2=perioderepository.getPeriode(periode1.getAnnee(), periode1.getMois());
-					System.out.println(periode2.getAnnee()+"/"+periode2.getMois()+"/"+periode2.getIdentifiant());
 					List<MesureGraphe> mg1=mesuregrapherepository.filterDashboardGraphe(modele,periode2);
-					System.out.println(mg1.size());
 					for(int k=0;k<mg1.size();k++) {
-						System.out.println(k+"-"+mg1.get(k).getLibelle());
 						if(!mg1.get(k).getLibelle().equals("PAYROLL CLAIM")){
 						double valeur=mg1.get(k).getValeur()*this.deviseToDevise(mg1.get(k).getDevise().getIdentifiant(), devise.getIdentifiant());
 						mg1.get(k).setValeur(valeur);
 						}
 						mesureGrapheList.add(mg1.get(k));
+						System.out.println(mg1.get(k).getLibelle()+"-"+mg1.get(k).getValeur());
 					}
 			}
 		dashboard.setGraphes(mesureGrapheList);

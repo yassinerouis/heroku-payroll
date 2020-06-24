@@ -55,15 +55,19 @@ public class PaysController {
 	}
 	
 	@PutMapping("/updatePays")
-	public void updateaction(@RequestParam("file") MultipartFile file,@RequestParam("pays") String pays_infos) {
+	public void updateaction(@RequestParam(required=false) MultipartFile file,@RequestParam("pays") String pays_infos) {
 		try {
 			Pays pays = new ObjectMapper().readValue(pays_infos,Pays.class);
-			StringBuilder fileNames = new StringBuilder();
-			Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
-			  fileNames.append(file.getOriginalFilename()+" ");
-			  Files.write(fileNameAndPath, file.getBytes());
-			
-			pays.setLogo(file.getOriginalFilename());
+			if(file==null) {
+				int id=pays.getCode();
+				pays.setLogo(paysservice.getOnePays(id).getLogo());
+			}else {
+				StringBuilder fileNames = new StringBuilder();
+				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
+				fileNames.append(file.getOriginalFilename()+" ");
+				Files.write(fileNameAndPath, file.getBytes());
+				pays.setLogo(file.getOriginalFilename());
+			}
 			paysservice.updatePays(pays);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
