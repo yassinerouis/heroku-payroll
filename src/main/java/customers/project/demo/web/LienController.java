@@ -124,5 +124,12 @@ public class LienController {
 			e.printStackTrace();
 		}
 	}
-	
+	@PutMapping("/lien_up/{id_lien}")
+	public void upLien(@PathVariable int id_lien) {
+		Lienservice.upLien(id_lien);
+	}
+	@PutMapping("/lien_down/{id_lien}")
+	public void downLien(@PathVariable int id_lien) {
+		Lienservice.downLien(id_lien);
+	}
 }

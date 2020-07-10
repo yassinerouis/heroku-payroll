@@ -61,7 +61,13 @@ public class Utilisateur  implements Serializable{
 	private String etablissement;
 	private String emploi;
 	private String statut;
-
+	private String photo;
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 	public String getSociete() {
 		return societe;
 	}

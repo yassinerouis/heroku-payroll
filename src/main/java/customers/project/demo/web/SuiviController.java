@@ -161,8 +161,7 @@ public class SuiviController {
 			for(int j=0;j<activities.size();j++) {
 				InfosActivite infos=new InfosActivite();
 		        infos.setResponsable(activities.get(j).getResponsable().getNom()+" "+activities.get(j).getResponsable().getPrenom());
-		        String image="http://localhost:8089/uploads/utilisateurs/"+((activities.get(j).getResponsable().getPrenom()+activities.get(j).getResponsable().getNom()).toLowerCase()).replaceAll(" ", "")+".jpg";
-		        infos.setImage_responsable(image);
+		        infos.setImage_responsable("http://localhost:8089/uploads/utilisateurs/"+activities.get(j).getResponsable().getPhoto());
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
 		        Calendar calendar1 = Calendar.getInstance();
 				Date firstDate;
@@ -192,17 +191,16 @@ public class SuiviController {
 					infos.setLibelle_statut(activities.get(j).getStatut());
 					k2++;
 					String statut=infos.getLibelle_statut();
-					if((diff<0) && ! (infos.getLibelle_statut().equals("En cours"))) {
-						infos.setColor_statut("bg-c-blue");
-					}
-					else if(diff>=0) {
-						infos.setColor_statut("bg-c-pink");
-					}
-					else{
+					if( (infos.getLibelle_statut().equals("En cours"))) {
 						infos.setColor_statut("bg-c-yellow");
-
+					}else if((diff>0)&&(infos.getLibelle_statut().equals("En attente"))){
+						infos.setColor_statut("bg-c-pink");
+						infos.setLibelle_statut("En retard");
+					}
+					else if(infos.getLibelle_statut().equals("En attente")){
+						infos.setColor_statut("bg-c-blue");
 					}	
-					if(infos.getLibelle_statut().equals("Terminée")) {
+					else if(infos.getLibelle_statut().equals("Terminée")) {
 						infos.setColor_statut("bg-c-green");
 						k1++;
 					}

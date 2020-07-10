@@ -12,4 +12,6 @@ public interface ModeleSuiviRepository extends JpaRepository<ModeleSuivi,Long> {
 	public long getModele(long modele);
 	@Query("FROM ModeleSuivi where modele_principal=?1")
 	public List<ModeleSuivi> SelectModeleSuivi(long modele);
+	@Query("Select distinct m.modele_principal FROM ModeleSuivi m where m.code_modele in ?1")
+	public List<Long> SelectModeles(List<Long> modelessuivi);
 }

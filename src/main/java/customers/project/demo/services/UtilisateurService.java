@@ -34,4 +34,7 @@ public class UtilisateurService {
 		public void deleteutilisateur(String id) {
 			utilisateurrepository.deleteById(id);
 		}
+		public Utilisateur getUtilisateur(String id) {
+			return utilisateurrepository.getOne(id);
+		}
 }

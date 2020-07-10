@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import customers.project.demo.entities.ActiviteSuivi;
 import customers.project.demo.entities.InfosActivite;
+import customers.project.demo.entities.Modele;
+import customers.project.demo.entities.PhaseSuivi;
 import customers.project.demo.services.ActiviteSuiviService;
 import customers.project.demo.services.ModeleSuiviService;
 import customers.project.demo.services.PhaseSuiviService;
@@ -61,5 +63,12 @@ public class ActiviteSuiviController {
 		System.out.println(activitesuivi.getCode_activite());
 		activitesuiviservice.updateactiviteSuivi(activitesuivi,echeance);
 	}
-	
+	@GetMapping("/getModelesUser/{user_id}")
+	public List<Modele> getPhases(@PathVariable String user_id){
+		List<Modele> modeles=modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id));
+		for(int i=0;i<modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).size();i++) {
+			modeles.add(modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).get(i));
+		}
+		return modeles;
+	}
 }

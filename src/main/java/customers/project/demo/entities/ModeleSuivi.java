@@ -46,6 +46,7 @@ public class ModeleSuivi implements Serializable{
 	public void setModeleSuivi(Modele modele) {
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat formater = null;
+		//SimpleDateFormat formaterMonth=new SimpleDateFormat("MMM");
 		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), modele.getDate_cible());
 	    Date date=calendar.getTime();
 	    formater = new SimpleDateFormat("EEEE");

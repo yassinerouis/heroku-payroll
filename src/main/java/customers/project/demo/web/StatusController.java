@@ -22,7 +22,7 @@ public class StatusController {
 	public void save(@RequestBody Status status) {
 		statusservice.addStatus(status);
 	}
-	@GetMapping("/getstatus")
+	@GetMapping("/admin/getstatus")
 	public List<Status> getAll() {
 		return statusservice.getStatus();
 	}

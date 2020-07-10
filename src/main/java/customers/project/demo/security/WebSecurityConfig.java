@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		//Je definie des droits d'accès
 		//the register API is accessible without authentication
 		http.authorizeRequests().antMatchers("/","/**").permitAll();
-		
+		//http.authorizeRequests().antMatchers("/","/admin/**").hasAuthority("Payroll manager");
 		//Don't let users adding shops to the DB unless they have the role ADMIN
 		//http.authorizeRequests().antMatchers(HttpMethod.POST,"/shops/**").hasAuthority("ADMIN");
 		

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import customers.project.demo.dao.ActiviteRepository;
 import customers.project.demo.dao.ActiviteSuiviRepository;
 import customers.project.demo.dao.EspaceTravailRepository;
+import customers.project.demo.dao.ModeleSuiviRepository;
 import customers.project.demo.dao.PhaseRepository;
 import customers.project.demo.dao.PhaseSuiviRepository;
 import customers.project.demo.dao.ResponsabiliteActiviteRepository;
@@ -35,6 +36,8 @@ import customers.project.demo.entities.Status;
 public class ActiviteSuiviService {
 	@Autowired
     public JavaMailSender emailSender;
+	@Autowired
+	ModeleSuiviRepository modelesuivirepository;
 	@Autowired
 	ActiviteRepository activiterepository;
 	@Autowired
@@ -112,7 +115,7 @@ public void sendEmail(InfosActivite activite) {
         long statut=activite.getStatut();
         String contenu;
         if(statut>0){
-            contenu="La date d'écheance de l'activité "+activite.getActivite().getLibelle()+" a terminé il y a "+statut +" jours";
+            contenu="La date d'écheance de l'activité "+activite.getActivite().getLibelle()+" s'est terminée il y a "+statut +" jours";
           }else if(statut<0){
             contenu="Il reste encore  "+statut +" jours pour la date d'écheance de l'activité "+activite.getActivite().getLibelle();
           }else{
@@ -154,5 +157,20 @@ public void deleteactiviteSuivi(long id) {
 	activiteSuivirepository.save(activiteSuivirepository.getOne(id));
 	activiteSuivirepository.deleteById(id);
 }*/
-
+public List<Long> selectModeles(String matricule){
+	List<Long> phases_id=new ArrayList<Long>();
+	for(int i=0;i<this.activiteSuivirepository.SelectPhasesSuivi(matricule).size();i++) {
+		phases_id.add(this.activiteSuivirepository.SelectPhasesSuivi(matricule).get(i).getCode_phase());
+	}
+	List<Long> modeles_id=new ArrayList<Long>();
+	for(int i=0;i<this.phasesuivirepository.SelectModelesSuivi(phases_id).size();i++) {
+		modeles_id.add(this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i).getCode_modele());
+	}
+	List<Long> modeles=new ArrayList<Long>();
+	for(int i=0;i<this.modelesuivirepository.SelectModeles(modeles_id).size();i++) {
+		modeles.add(this.modelesuivirepository.SelectModeles(modeles_id).get(i));
+		System.out.println(modeles.get(i));
+	}
+	return modeles;
+}
 }

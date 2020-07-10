@@ -45,6 +45,12 @@ public class LienService {
 		Lienrepository.getOne(Lien.getId()).setRoles(Lien.getRoles());
 		
 	}
+	public void upLien(int id_lien) {
+		Lienrepository.up(id_lien);
+	}
+	public void downLien(int id_lien) {
+		Lienrepository.down(id_lien);
+	}
 	public void deleteLien(Integer id) {
 		Lienrepository.deleteById(id);
 	}
