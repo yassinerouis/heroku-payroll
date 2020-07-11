@@ -17,4 +17,6 @@ public interface SuiviRepository  extends JpaRepository<Suivi,String> {
 	public void updateSuivi(boolean clotured,long code_modele);
 	@Query("FROM Suivi WHERE modele.code_modele=?1")
 	public Suivi selectSuivi(long code_modele);
+	@Query("select distinct year FROM Suivi")
+	public List<Long> selectYears();
 }

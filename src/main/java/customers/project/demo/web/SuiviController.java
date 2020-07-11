@@ -70,6 +70,7 @@ public class SuiviController {
 	}
 	@GetMapping("/selectSuivi/{modele}")
 	public Suivi getSuivis(@PathVariable long modele) {
+		System.out.println("modele"+modele);
 		return suiviservice.selectSuivi(modele);
 	}
 	@PutMapping("/updateSuivi")
@@ -223,25 +224,29 @@ public class SuiviController {
 		listActivities.get(0).setCode_modele(modelesuivi.getCode_modele());
 	return listActivities;
 	}
-	@GetMapping("/getSuivi/{id_modele}")
-	public List<SuiviModele> getSuivi(@PathVariable long id_modele) {
-		ModeleSuivi modelesuivi=modelesuiviservice.getModeleSuivi(id_modele);
+	@GetMapping("/getSuivi/{id_modele}/{matricule}")
+	public List<SuiviModele> getSuivi(@PathVariable long id_modele,@PathVariable String matricule) {
+		int size=activitesuiviservice.selectModelesSuiviUser(matricule, id_modele).size()-1;
+		ModeleSuivi modelesuivi=activitesuiviservice.selectModelesSuiviUser(matricule, id_modele).get(size);
 		return this.selectSuivi(modelesuivi);
 	}
-	@GetMapping("/filterSuivi/{id_modele}/{year}/{month}")
-	public List<SuiviModele> filterSuivi(@PathVariable long id_modele,@PathVariable Integer year,@PathVariable Integer month) {
+	@GetMapping("/filterSuivi/{matricule}/{id_modele}/{year}/{month}")
+	public List<SuiviModele> filterSuivi(@PathVariable String matricule,@PathVariable long id_modele,@PathVariable Integer year,@PathVariable Integer month) {
 		System.out.println("id:"+id_modele+"year:"+year+"month:"+month);
-		List<ModeleSuivi> modelessuivi=modelesuiviservice.selectModeleSuivis(id_modele);
+		List<ModeleSuivi> modelessuivi=activitesuiviservice.selectModelesSuiviUser(matricule,id_modele);
 		ModeleSuivi modelesuivi=new ModeleSuivi();
-		for(int i=0;i<modelessuivi.size();i++) {
-			Calendar calendar=Calendar.getInstance();
-			calendar.setTime(modelessuivi.get(i).getDate_creation());
-			Integer year1=calendar.get(Calendar.YEAR);
-			Integer month1=calendar.get(Calendar.MONTH)+1;
-			if((year1.equals(year))&&(month1.equals(month))) {
-				modelesuivi=modelessuivi.get(i);
+		if(modelessuivi.size()>0) {
+			for(int i=0;i<modelessuivi.size();i++) {
+				Calendar calendar=Calendar.getInstance();
+				calendar.setTime(modelessuivi.get(i).getDate_creation());
+				Integer year1=calendar.get(Calendar.YEAR);
+				Integer month1=calendar.get(Calendar.MONTH)+1;
+				if((year1.equals(year))&&(month1.equals(month))) {
+					modelesuivi=modelessuivi.get(i);
+				}
 			}
 		}
+		
 		return this.selectSuivi(modelesuivi);
 	}
 	@PutMapping("/updatedatecible")
@@ -263,8 +268,10 @@ public class SuiviController {
 	}
 	@GetMapping("/getModeleSuivi/{id}")
 	public ModeleSuivi getModeleSuivi(@PathVariable long id) {
-		
 		return suiviservice.getModeleSuivi(id);
-		
+	}
+	@GetMapping("/getyears")
+	public List<Long> getYears() {
+		return suiviservice.selectYears();
 	}
 }

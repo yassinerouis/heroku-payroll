@@ -42,4 +42,7 @@ public void updatesuivi(Suivi suivi) {
 public Suivi selectSuivi(long modele) {
 	return suivirepository.selectSuivi(modele);
 }
+public List<Long> selectYears(){
+	return suivirepository.selectYears();
 }
+} 

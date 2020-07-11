@@ -25,6 +25,7 @@ import customers.project.demo.entities.Activite;
 import customers.project.demo.entities.ActiviteSuivi;
 import customers.project.demo.entities.EspaceTravail;
 import customers.project.demo.entities.InfosActivite;
+import customers.project.demo.entities.ModeleSuivi;
 import customers.project.demo.entities.Phase;
 import customers.project.demo.entities.PhaseSuivi;
 import customers.project.demo.entities.ResponsabiliteActivite;
@@ -53,17 +54,7 @@ public class ActiviteSuiviService {
 public ActiviteSuivi addactiviteSuivi(ActiviteSuivi activiteSuivi) {
 	return activiteSuivirepository.save(activiteSuivi);
 	}
-public ActiviteSuivi addFirstactiviteSuivi(ActiviteSuivi activiteSuivi,int id_status,long id_phase,int id_espacetravail) {
-	PhaseSuivi phase=phasesuivirepository.getOne(id_phase);
-	EspaceTravail espacetravail=espacetravailrepository.getOne(id_espacetravail);
-		Status status=statusrepository.getOne(id_status);
-		activiteSuivi.setPhase(phase);
-		activiteSuivi.setStatus(status);
-		ActiviteSuivi act=activiteSuivirepository.save(activiteSuivi);
-		phase.getActivite().add(activiteSuivi);
-		activiteSuivi.setEspacetravail(espacetravail);
-		return act;
-	}
+
 
 public ActiviteSuivi getactiviteSuivi(Long id) {
 	return activiteSuivirepository.getOne(id);
@@ -105,6 +96,7 @@ public List<ActiviteSuivi> getActivities(long phase){
 	return activiteSuivirepository.getActivities(phase);
 }
 public void delete(long id) {
+	responsabiliteactiviterepository.deleteResponsabilites(id);
 	activiteSuivirepository.deleteById(id);
 }
 public void sendEmail(InfosActivite activite) {
@@ -157,7 +149,21 @@ public void deleteactiviteSuivi(long id) {
 	activiteSuivirepository.save(activiteSuivirepository.getOne(id));
 	activiteSuivirepository.deleteById(id);
 }*/
-public List<Long> selectModeles(String matricule){
+public List<ModeleSuivi>selectModelesSuiviUser(String matricule,long modele){
+	List<Long> phases_id=new ArrayList<Long>();
+	for(int i=0;i<this.activiteSuivirepository.SelectPhasesSuivi(matricule).size();i++) {
+		phases_id.add(this.activiteSuivirepository.SelectPhasesSuivi(matricule).get(i).getCode_phase());
+	}
+	List<ModeleSuivi> modeles=new ArrayList<ModeleSuivi>();
+	for(int i=0;i<this.phasesuivirepository.SelectModelesSuivi(phases_id).size();i++) {
+		if(this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i).getModele_principal()==modele) {
+			modeles.add(this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i));
+			System.out.println("l"+this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i).getCode_modele());
+		}
+	}
+	return modeles;
+}
+public List<Long>selectModelesSuivi(String matricule){
 	List<Long> phases_id=new ArrayList<Long>();
 	for(int i=0;i<this.activiteSuivirepository.SelectPhasesSuivi(matricule).size();i++) {
 		phases_id.add(this.activiteSuivirepository.SelectPhasesSuivi(matricule).get(i).getCode_phase());
@@ -165,7 +171,12 @@ public List<Long> selectModeles(String matricule){
 	List<Long> modeles_id=new ArrayList<Long>();
 	for(int i=0;i<this.phasesuivirepository.SelectModelesSuivi(phases_id).size();i++) {
 		modeles_id.add(this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i).getCode_modele());
+	System.out.println(modeles_id.get(i)+"-"+this.phasesuivirepository.SelectModelesSuivi(phases_id).get(i).getDate_creation());
 	}
+	return modeles_id;
+}
+public List<Long> selectModeles(String matricule){
+	List<Long> modeles_id=this.selectModelesSuivi(matricule);
 	List<Long> modeles=new ArrayList<Long>();
 	for(int i=0;i<this.modelesuivirepository.SelectModeles(modeles_id).size();i++) {
 		modeles.add(this.modelesuivirepository.SelectModeles(modeles_id).get(i));
