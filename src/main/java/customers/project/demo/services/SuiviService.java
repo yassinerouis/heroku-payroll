@@ -45,4 +45,7 @@ public Suivi selectSuivi(long modele) {
 public List<Long> selectYears(){
 	return suivirepository.selectYears();
 }
+public List<ModeleSuivi> selectModelesNotifications(List<Long> modeles){
+	return suivirepository.selectModelesSuivi(modeles);
+}
 } 

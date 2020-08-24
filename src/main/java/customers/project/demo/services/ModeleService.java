@@ -2,7 +2,7 @@ package customers.project.demo.services;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -116,13 +116,26 @@ public class ModeleService {
 		}
 		modelerepository.deleteById(id);
 	}
-	public Set<Population> getPopulations(long Modele) {
-		TypePopulation population=modelerepository.getOne(Modele).getTypepopulation();
-		System.out.println(population.getLibelle());
-		return populationrepository.findPopulations(population.getIdentifiant());
+	public int getTypePopulation(long modele) {
+		return modelerepository.getOne(modele).getTypepopulation().getIdentifiant();
+	}
+	public Set<Population> getPopulations(int typepopulation) {
+		return populationrepository.findPopulations(typepopulation);
+	}
+	public Set<Population> findPopulations(int typepopulation) {
+		Set<Population> populations=new HashSet<Population>();
+		if(typepopulation==1) {
+			populations.add(populationrepository.getOne(typepopulation));
+		}if(typepopulation==2) {
+			
+		}
+		return populations;
 	}
 	public List<Modele> getModeles(String reglementation) {
 		return modelerepository.findModeles(reglementation);
+	}
+	public List<Modele> getModelesForResponsable(String matricule) {
+		return modelerepository.getModelesForResponsable(matricule);
 	}
 }
 

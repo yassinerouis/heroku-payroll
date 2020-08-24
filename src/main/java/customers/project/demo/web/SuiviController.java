@@ -66,7 +66,11 @@ public class SuiviController {
 	PopulationService populationservice;
 	@GetMapping("/getpopulations/{modele}")
 	public Set<Population> getPopulations(@PathVariable long modele) {
-		 return modeleservice.getPopulations(modele);
+		 return modeleservice.getPopulations(modeleservice.getTypePopulation(modele));
+	}
+	@GetMapping("/getPopulations/{type_population}")
+	public Set<Population> getpopulations(@PathVariable int type_population) {
+		 return modeleservice.getPopulations(type_population);
 	}
 	@GetMapping("/selectSuivi/{modele}")
 	public Suivi getSuivis(@PathVariable long modele) {
@@ -233,6 +237,7 @@ public class SuiviController {
 	@GetMapping("/filterSuivi/{matricule}/{id_modele}/{year}/{month}")
 	public List<SuiviModele> filterSuivi(@PathVariable String matricule,@PathVariable long id_modele,@PathVariable Integer year,@PathVariable Integer month) {
 		System.out.println("id:"+id_modele+"year:"+year+"month:"+month);
+		
 		List<ModeleSuivi> modelessuivi=activitesuiviservice.selectModelesSuiviUser(matricule,id_modele);
 		ModeleSuivi modelesuivi=new ModeleSuivi();
 		if(modelessuivi.size()>0) {
@@ -273,5 +278,77 @@ public class SuiviController {
 	@GetMapping("/getyears")
 	public List<Long> getYears() {
 		return suiviservice.selectYears();
+	}
+	@GetMapping("/getModeleSuiviNotif/{id}")
+	public List<InfosActivite> getModeleSuivi(@PathVariable String id) {
+		
+		List<ModeleSuivi> modelessuivi=suiviservice.selectModelesNotifications(activitesuiviservice.selectModelesSuivi(id));
+		List<InfosActivite> activites=new ArrayList<InfosActivite>();
+		for(int i=0;i<modelessuivi.size();i++) {
+			List<PhaseSuivi> phases=phasesuiviservice.getPhases(modelessuivi.get(i).getCode_modele());
+			for(int k=0;k<phases.size();k++) {
+				List<ActiviteSuivi> activities=activitesuiviservice.getActivities(phases.get(k).getCode_phase());
+				for(int j=0;j<activities.size();j++) {
+					try {
+					if(activities.get(j).getResponsable().getMatricule().equals(id)&&!activities.get(j).getStatut().equals("Terminée")) {
+						System.out.println(activities.get(j).getResponsable().getMatricule());
+						InfosActivite infos=new InfosActivite();
+				        infos.setResponsable(activities.get(j).getResponsable().getNom()+" "+activities.get(j).getResponsable().getPrenom());
+				        infos.setImage_responsable("http://localhost:8089/uploads/utilisateurs/"+activities.get(j).getResponsable().getPhoto());
+						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
+				        Calendar calendar1 = Calendar.getInstance();
+						Date firstDate;
+						SimpleDateFormat formater = null;
+						Date cible=null;
+							
+								firstDate = sdf.parse(sdf.format(calendar1.getTime()));
+							
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(activities.get(j).getEcheance());
+							Date secondDate = sdf.parse(sdf.format(calendar.getTime()));
+							long diffInMillies =  firstDate.getTime()-secondDate.getTime();
+							long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+							Locale loc = new Locale("fr", "FR");
+							DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, loc);
+							infos.setDate_echeance(dateFormat.format(activities.get(j).getEcheance()));
+							infos.setEspacetravail(modelessuivi.get(i).getLibelle());
+							infos.setStatut(diff);
+							infos.setId(activities.get(j).getCode_activite());
+							infos.setOrdre(activities.get(j).getOrdre_affichage());
+							infos.setMatricule(activities.get(j).getResponsable().getMatricule());
+							cible=activities.get(j).getPhasesuivi().getModele().getcible();
+							formater = new SimpleDateFormat("EEEE d MMM yyyy");
+							
+							long diffMillies = activities.get(j).getEcheance().getTime()-cible.getTime();
+							long echeance = TimeUnit.DAYS.convert(diffMillies, TimeUnit.MILLISECONDS);
+					        infos.setEcheance(echeance);
+							infos.setActivite(modelesuiviservice.getActivite(activities.get(j).getActivite_principale()));
+							
+							infos.setLibelle_statut(activities.get(j).getStatut());
+							String statut=infos.getLibelle_statut();
+							if( (infos.getLibelle_statut().equals("En cours"))) {
+								infos.setColor_statut("bg-c-yellow");
+							}else if((diff>0)&&(infos.getLibelle_statut().equals("En attente"))){
+								infos.setColor_statut("bg-c-pink");
+								infos.setLibelle_statut("En retard");
+							}
+							else if(infos.getLibelle_statut().equals("En attente")){
+								infos.setColor_statut("bg-c-blue");
+							}	
+							else if(infos.getLibelle_statut().equals("Terminée")) {
+								infos.setColor_statut("bg-c-green");
+							}
+							activites.add(infos);
+					}
+					}
+					catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		System.out.println(activites.size());
+		return activites;
 	}
 }

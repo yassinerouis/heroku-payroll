@@ -22,17 +22,30 @@ public class Population implements Serializable{
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int identifiant;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public Population getPopulation() {
+		return population;
+	}
+	public void setPopulation(Population population) {
+		this.population = population;
+	}
+	private String code;
 	String libelle;
-
-
-public Population() {
+	public Population() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 @ManyToOne(cascade = javax.persistence.CascadeType.PERSIST)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 private TypePopulation typepopulation;
-
+@ManyToOne
+private Population population;
 public Population(int identifiant, String libelle, TypePopulation typepopulation) {
 	super();
 	this.identifiant = identifiant;

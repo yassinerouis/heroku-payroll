@@ -14,4 +14,6 @@ public interface ModeleRepository extends JpaRepository<Modele,Long>{
 	public List<Modele> SelectModeles(List<Long> modeles);
 	@Query("Select rm.modele FROM ResponsabiliteModele rm where rm.payrollmanager.matricule=?1 and rm.date_fin is null and rm.modele not in ?2")
 	public List<Modele> getModeles(String matricule,List<Modele> modeles);
+	@Query("Select rm.modele FROM ResponsabiliteModele rm where rm.payrollmanager.matricule=?1 and rm.date_fin is null")
+	public List<Modele> getModelesForResponsable(String matricule);
 }
