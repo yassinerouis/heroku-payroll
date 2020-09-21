@@ -102,7 +102,7 @@ public void delete(long id) {
 public void sendEmail(InfosActivite activite) {
 	try {
 		SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("rouissi.yassine.97@gmail.com");
+        message.setTo("payrollspace.in@gmail.com");
         message.setSubject("Relance de l'activité "+activite.getActivite().getLibelle());
         long statut=activite.getStatut();
         String contenu;

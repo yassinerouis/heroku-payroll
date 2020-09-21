@@ -164,9 +164,10 @@ public class SuiviController {
 			SuiviModele suivimodele=new SuiviModele();
 			suivimodele.setListphases(phases.get(i));
 			for(int j=0;j<activities.size();j++) {
+				//if(activities.get(j).isPilotage()) {
 				InfosActivite infos=new InfosActivite();
 		        infos.setResponsable(activities.get(j).getResponsable().getNom()+" "+activities.get(j).getResponsable().getPrenom());
-		        infos.setImage_responsable("http://localhost:8089/uploads/utilisateurs/"+activities.get(j).getResponsable().getPhoto());
+		        infos.setImage_responsable(activities.get(j).getResponsable().getPhoto());
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
 		        Calendar calendar1 = Calendar.getInstance();
 				Date firstDate;
@@ -192,7 +193,6 @@ public class SuiviController {
 					long echeance = TimeUnit.DAYS.convert(diffMillies, TimeUnit.MILLISECONDS);
 			        infos.setEcheance(echeance);
 					infos.setActivite(modelesuiviservice.getActivite(activities.get(j).getActivite_principale()));
-					
 					infos.setLibelle_statut(activities.get(j).getStatut());
 					k2++;
 					String statut=infos.getLibelle_statut();
@@ -209,12 +209,14 @@ public class SuiviController {
 						infos.setColor_statut("bg-c-green");
 						k1++;
 					}
+					
 					listinfos.add(infos);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+		//}
 			suivimodele.setActivitesuivi(listinfos);
 			listActivities.add(suivimodele);
 			listActivities.get(0).setDate_cible(formater.format(cible));
@@ -228,8 +230,8 @@ public class SuiviController {
 		listActivities.get(0).setCode_modele(modelesuivi.getCode_modele());
 	return listActivities;
 	}
-	@GetMapping("/getSuivi/{id_modele}/{matricule}")
-	public List<SuiviModele> getSuivi(@PathVariable long id_modele,@PathVariable String matricule) {
+	@GetMapping("/getSuivi/{matricule}/{id_modele}")
+	public List<SuiviModele> getSuivi(@PathVariable String matricule,@PathVariable long id_modele) {
 		int size=activitesuiviservice.selectModelesSuiviUser(matricule, id_modele).size()-1;
 		ModeleSuivi modelesuivi=activitesuiviservice.selectModelesSuiviUser(matricule, id_modele).get(size);
 		return this.selectSuivi(modelesuivi);
@@ -271,6 +273,15 @@ public class SuiviController {
 			}
 		}
 	}
+	@GetMapping("/getModelesUser/{user_id}")
+	public List<Modele> getModeles(@PathVariable String user_id){
+		System.out.println("id"+user_id);
+		List<Modele> modeles=modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id));
+		for(int i=0;i<modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).size();i++) {
+			modeles.add(modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).get(i));
+		}
+		return modeles;
+	}
 	@GetMapping("/getModeleSuivi/{id}")
 	public ModeleSuivi getModeleSuivi(@PathVariable long id) {
 		return suiviservice.getModeleSuivi(id);
@@ -294,7 +305,7 @@ public class SuiviController {
 						System.out.println(activities.get(j).getResponsable().getMatricule());
 						InfosActivite infos=new InfosActivite();
 				        infos.setResponsable(activities.get(j).getResponsable().getNom()+" "+activities.get(j).getResponsable().getPrenom());
-				        infos.setImage_responsable("http://localhost:8089/uploads/utilisateurs/"+activities.get(j).getResponsable().getPhoto());
+				        infos.setImage_responsable(activities.get(j).getResponsable().getPhoto());
 						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
 				        Calendar calendar1 = Calendar.getInstance();
 						Date firstDate;

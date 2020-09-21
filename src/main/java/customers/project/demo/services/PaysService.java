@@ -34,6 +34,9 @@ StatusRepository statusrepository;
 public List<Pays> getPays() {
 	return paysrepository.findAll();
 }
+public Pays getPaysByReglementation(String reglementation) {
+	return paysrepository.findByReglementation(reglementation);
+}
 public Pays getOnePays(int id) {
 	return paysrepository.getOne(id);
 }

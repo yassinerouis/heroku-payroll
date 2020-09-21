@@ -4,6 +4,20 @@ import java.util.List;
 
 public class SuiviModele {
 	PhaseSuivi listphases;
+	List<Long> years;
+	List<Modele> modeles;
+	public List<Long> getYears() {
+		return years;
+	}
+	public void setYears(List<Long> years) {
+		this.years = years;
+	}
+	public List<Modele> getModeles() {
+		return modeles;
+	}
+	public void setModeles(List<Modele> modeles) {
+		this.modeles = modeles;
+	}
 	List<InfosActivite> activitesinfos;
 	public PhaseSuivi getListphases() {
 		return listphases;

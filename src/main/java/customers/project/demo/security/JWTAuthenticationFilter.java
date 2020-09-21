@@ -34,7 +34,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		System.out.println("hi");
 
 		//recuperer les donnees de l'utilisateur
 		CompteUtilisateur user = null;		
@@ -43,9 +42,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println("***********************");
-		System.out.println("username: "+user.getUsername());
-		System.out.println("password: "+user.getPassword());
 		return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 	
 	}
@@ -54,7 +50,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		User springuser = (User) authResult.getPrincipal();
-		System.out.println("ggg");
 		//Generate the token
 		String jwt = Jwts.builder()
 					.setSubject(springuser.getUsername())

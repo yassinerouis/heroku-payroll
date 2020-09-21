@@ -25,6 +25,8 @@ public class TypePaieService {
 		public void updatetypepaie(TypePaie typepaie) {
 			typepaierepository.getOne(typepaie.getIdentifiant()).
 			setLibelle(typepaie.getLibelle());
+			typepaierepository.getOne(typepaie.getIdentifiant()).
+			setCode(typepaie.getCode());
 			typepaierepository.getOne(typepaie.getIdentifiant()).setDescription(typepaie.getDescription());
 		}
 		public void deletetypepaie(Integer id) {

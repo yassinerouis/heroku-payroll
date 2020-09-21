@@ -63,12 +63,5 @@ public class ActiviteSuiviController {
 		System.out.println(activitesuivi.getCode_activite());
 		activitesuiviservice.updateactiviteSuivi(activitesuivi,echeance);
 	}
-	@GetMapping("/getModelesUser/{user_id}")
-	public List<Modele> getPhases(@PathVariable String user_id){
-		List<Modele> modeles=modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id));
-		for(int i=0;i<modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).size();i++) {
-			modeles.add(modelesuiviservice.findModeles(user_id,modelesuiviservice.getModeles(activitesuiviservice.selectModeles(user_id))).get(i));
-		}
-		return modeles;
-	}
+
 }

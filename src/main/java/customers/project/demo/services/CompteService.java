@@ -33,6 +33,7 @@ public CompteUtilisateur save(CompteUtilisateur compte) {
 public Utilisateur findUser(String username) {
 	return compterepository.findByUsername(username).getUtilisateur();
 }
+
 public CompteUtilisateur findUserByUserNamme(String username) {
 	return compterepository.findByUsername(username);
 }

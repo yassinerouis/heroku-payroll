@@ -51,9 +51,15 @@ public class PaysController {
 		}
 	@GetMapping("/getPays")
 	public List<Pays> getAll() {
+		
+		System.out.println(uploadDirectory);
 		return paysservice.getPays();
 	}
-	
+	@GetMapping("/getPays/{reglementation}")
+	public Pays getPays(@PathVariable String reglementation) {
+		System.out.println(reglementation);
+		return paysservice.getPaysByReglementation(reglementation);
+	}
 	@PutMapping("/updatePays")
 	public void updateaction(@RequestParam(required=false) MultipartFile file,@RequestParam("pays") String pays_infos) {
 		try {

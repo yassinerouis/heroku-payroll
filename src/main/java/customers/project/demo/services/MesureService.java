@@ -2,14 +2,9 @@ package customers.project.demo.services;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import customers.project.demo.dao.DeviseRepository;
 import customers.project.demo.dao.MesureCompositionRepository;
 import customers.project.demo.dao.MesureGrapheRepository;
@@ -24,6 +19,7 @@ import customers.project.demo.entities.Periode;
 
 @Service
 public class MesureService {
+	
 	@Autowired
 	MesureWidgetRepository mesurewidgetrepository;
 	@Autowired
@@ -40,13 +36,24 @@ public class MesureService {
 	public float deviseToDevise(int id_devise_base,int id_devise_final) {
 		Devise devise_base=this.getDevise(id_devise_base);
 		Devise devise_final=this.getDevise(id_devise_final);
+	/*	HttpHeaders headers = new HttpHeaders();
+		headers.add("x-rapidapi-host", "currency-exchange.p.rapidapi.com");
+		headers.add("x-rapidapi-key", "5469d4942dmsh623b16caa540cb2p11ab12jsn1da2fe6b51aa");
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+		RestTemplate rest=new RestTemplate();
+		ResponseEntity<String> response = rest.exchange(
+				"https://currency-exchange.p.rapidapi.com/exchange?from="+devise_base.getSymbol()+"&to="+devise_final.getSymbol(), HttpMethod.GET, entity, String.class);
+		
+		System.out.println(devise_final.getSymbol()+"&to="+devise_base.getSymbol()+""+response.getBody()+"-------------");
+
+			montant=Float.parseFloat(response.getBody());
+	*/
 		float montant=devise_base.getValeur_euro()/devise_final.getValeur_euro();
 		return montant;
 	}
 	public Dashboard filterDashboard(Devise devise,Modele modele,Periode periode) {
 		Dashboard dashboard=new Dashboard();
 		List<MesureWidget> widgets=new ArrayList<MesureWidget>();
-		System.out.println(modele.getCode_modele()+" "+periode.getIdentifiant());
 		widgets=mesurewidgetrepository.filterDashboarWidget(modele, periode);
 		for(int i=0;i<widgets.size();i++) {
 			if( ! widgets.get(i).getLibelle().equals("TOTAL EMPLOYEES") && ! widgets.get(i).getLibelle().equals("PROCESSED PAYROLL")){
@@ -55,7 +62,6 @@ public class MesureService {
 				widgets.get(i).setAncienne_valeur(ancienne_valeur);
 				widgets.get(i).setValeur(valeur);
 			}
-			System.out.println("w"+widgets.get(i).getValeur());
 		}
 		dashboard.setWidgets(widgets);
 		dashboard.setCompositions(mesurecompositionrepository.filterDashboardComposition(modele, periode.getAnnee()));
@@ -85,7 +91,6 @@ public class MesureService {
 						mg1.get(k).setValeur(valeur);
 						}
 						mesureGrapheList.add(mg1.get(k));
-						System.out.println(mg1.get(k).getLibelle()+"-"+mg1.get(k).getValeur());
 					}
 			}
 		dashboard.setGraphes(mesureGrapheList);

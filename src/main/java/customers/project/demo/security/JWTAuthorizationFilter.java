@@ -23,7 +23,7 @@ import io.jsonwebtoken.Jwts;
 
 //Checking if the token is valid before each request to our server
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-
+//pour chaque requette
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
